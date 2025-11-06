@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 120" role="img" aria-label="Logo Formule 1">
+  <title>Logo Formule 1</title>
+  <g fill="#E10600">
+    <path d="M16 90 L104 18 C124 3 152 3 172 18 L148 36 L120 36 L68 90 Z"/>
+    <path d="M180 18 H236 C248 18 256 26 256 38 C256 50 248 58 236 58 H204 L220 90 H152 Z"/>
+  </g>
+</svg>

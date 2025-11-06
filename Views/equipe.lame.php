@@ -29,8 +29,6 @@
         <button class="file-upload btn">Créer</button>
       </fieldset>
     </form>
-  <?php else: ?>
-    <p class="info-guest">Connectez-vous pour créer ou modifier une écurie.</p>
   <?php endif; ?>
 
   <table>

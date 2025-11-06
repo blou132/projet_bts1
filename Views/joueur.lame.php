@@ -30,8 +30,6 @@
         <button class="file-upload btn">Créer</button>
       </fieldset>
     </form>
-  <?php else: ?>
-    <p class="info-guest">Connectez-vous pour ajouter ou modifier des pilotes.</p>
   <?php endif; ?>
 
   <table>

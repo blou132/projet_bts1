@@ -38,15 +38,18 @@ header.site-header {
 
 .brand-accent {
   background: #fff;
-  color: #e10600;
-  padding: 2px 8px;
-  border-radius: 6px;
-  margin-right: 8px;
-  font-size: 1rem;
-  letter-spacing: 1px;
+  padding: 8px 26px;
+  border-radius: 999px;
+  margin-right: 10px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+.brand-accent img {
+  display: block;
+  height: 30px;
+  width: auto;
 }
 
 .brand-tagline {
