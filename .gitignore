@@ -1,0 +1,5 @@
+/.env
+/.env.local
+/Database/database.sqlite
+/database.sqlite
+/vendor/

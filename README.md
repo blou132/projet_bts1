@@ -1,82 +1,66 @@
 # TPFormula1 — Gestion F1 (BTS SIO SLAM)
 
-Application PHP (MVC léger) pour gérer un univers Formule 1 : Grands Prix, écuries et pilotes. Le projet vise à illustrer les compétences du référentiel BTS SIO option SLAM (développement d’applications).
-
-## Objectifs pédagogiques (Référentiel SLAM)
-
-| Compétence | Illustration dans le projet |
-|------------|-----------------------------|
-| A1.1.1 Analyse du cahier des charges | Users stories « gestion des Grands Prix / écuries / pilotes », formulaires CRUD, règles métier explicites |
-| A1.2.2 Rédaction des spécifications techniques | Structure MVC, `Controllers/`, `Models/`, documentation dans `docs/` |
-| A2.1.1 Conception d’une base de données | Modèle relationnel SQLite (`Database/Database.php`, script `init_db.php`) |
-| A2.2.1 Maquettage / prototypage | Vues `.lame.php` et gabarits layout header/footer |
-| A2.3.1 Mise en place d’environnements de test | Utilisation de SQLite embarqué, instructions d’exécution locale |
-| A4.1.2 Développement d’une application sécurisée | Validation des entrées, protection CSRF, contrôle des uploads |
-| A4.1.3 Développement d’une interface utilisateur | Templates HTML/CSS, gestion des formulaires CRUD |
-| A4.1.6 Rédaction de la documentation technique | Ce README, dossiers `docs/` (architecture, plan de tests) |
-| A4.2.2 Maintenance corrective/évolutive | Organisation modulaire, contrôleurs séparés, validations réutilisables |
-| A5.1.1 Gestion du patrimoine informatique | Script de migration, documentation d’installation, conformité RGPD (à compléter) |
-
-Des compléments (tests automatisés, gestion des rôles, monitoring…) peuvent être ajoutés pour couvrir d’autres compétences.
-
-## Architecture
-
-- **index.php** : point d’entrée, instancie les contrôleurs selon la route.
-- **Controllers/** : logique métier (Grands Prix, écuries, pilotes), validation, CSRF, uploads.
-- **Models/** : entités de domaine (POPO).
-- **Views/** : templates HTML (header/footer + pages CRUD).
-- **Database/** : gestion SQLite (singleton, migrations, reset).
-- **Security/** : module CSRF.
-- **Public/** : assets (CSS, uploads).
-- **docs/** : ressources pédagogiques (plan de tests, architecture, backlog).
+Application PHP (MVC léger) pour gérer un univers Formule 1 : Grands Prix, écuries et pilotes.  
+La stack a été adaptée pour fonctionner avec **MySQL** (PDO, InnoDB, UTF-8).
 
 ## Installation
 
-```bash
-git clone <repo>
-cd projet-bts
-php -S localhost:8000
-```
+1. **Cloner** le projet puis se placer dans le dossier `tpfootball/`.
+2. **Créer une base MySQL** (exemple) :
+   ```sql
+   CREATE DATABASE tpformula1 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   ```
+3. **Configurer la connexion MySQL** : deux options
+   - via fichier `.env` (recommandé) :
+     ```bash
+     cp .env.example .env
+     # éditez .env pour refléter votre configuration (ex. DB_NAME=projetF1, DB_PASS=123456789)
+     ```
+   - ou via export dans votre terminal :
+     ```bash
+     export DB_HOST=127.0.0.1
+     export DB_PORT=3306
+     export DB_NAME=tpformula1
+     export DB_USER=root
+     export DB_PASS=secret
+     ```
+4. **Initialiser la base** avec les données de démonstration :
+   ```bash
+   php init_db.php
+   ```
+5. **Lancer le serveur PHP interne** :
+   ```bash
+   php -S localhost:8000
+   ```
+6. Ouvrir `http://localhost:8000/index.php`.
 
-1. PHP ≥ 8.1 recommandé.
-2. `index.php` crée automatiquement la base `Database/database.sqlite`.
-3. Pour repartir à zéro et charger les données de démonstration (grands prix, écuries, pilotes, visuels) : `php init_db.php`.
+## Navigation
 
-## Utilisation
-
+- `?route=accueil` : tableau de bord (statistiques, écuries, pilotes, Grands Prix).
 - `?route=championnats` : CRUD des Grands Prix.
 - `?route=equipes` : CRUD des écuries.
 - `?route=joueurs` : CRUD des pilotes.
 - `?route=jointure` : vue synthétique pilotes/écuries.
-- `?route=calendrier` : calendrier saison 2026 (données FOM inspirées).
-- `?route=classements` : tableau de points démo type heatmap.
-- La page d’accueil présente un tableau de bord (effectifs par écurie, pilotes à l’affiche, vitrine des Grands Prix) alimenté par les données de démonstration.
+- `?route=calendrier` : calendrier saison 2026.
+- `?route=classements` : classement pilotes (heatmap démo).
 
-Chaque formulaire embarque un jeton CSRF et des validations côté serveur.
+## Dossier utile
 
-## Sécurité & Qualité
+- `Controllers/` : logique métier.
+- `Models/` : entités de domaine.
+- `Views/` : templates.
+- `Database/Database.php` : gestion MySQL + migrations.
+- `Public/assets/` : logos, portraits, affiches.
 
-- Validation serveur (`ValidationController`).
-- Limitation à des formats images pour uploads + stockage dans `Public/uploads`.
-- Jeton CSRF obligatoire sur les actions POST.
-- SQLite avec contraintes d’intégrité (clé étrangère ON DELETE CASCADE).
-- Sanitation des sorties (`htmlspecialchars`).
+## Scripts
 
-Axes d’amélioration :
+- `init_db.php` : remet la base à zéro (`DROP TABLE` + seed) et recharge les données de démo.
+  > Attention : nécessite des droits suffisants sur le schéma cible.
 
-- Authentification + gestion de rôles.
-- Journalisation des actions sensibles.
-- Tests unitaires (ex. PHPUnit) et tests fonctionnels.
-- CI/CD basique (GitHub Actions).
+## Dépendances
 
-## Dossier pédagogique (`docs/`)
-
-- `docs/architecture.md` : schéma MVC, flux de données.
-- `docs/backlog.md` : user stories / tâches.
-- `docs/plan-tests.md` : cas de tests manuels.
-
-Ces documents facilitent l’évaluation des compétences et la présentation orale (E4/E6).
-
-## Licence / Crédits
-
-Projet d’apprentissage pour le BTS SIO SLAM – Teo & Maxime. Réutilisation pédagogique libre tant que les crédits sont conservés.
+Aucune dépendance Composer. PHP ≥ 8.1 et MySQL ≥ 5.7/8 sont recommandés.  
+Pour production, pensez à :
+- sécuriser l’accès aux scripts (`init_db.php`),
+- créer un utilisateur MySQL dédié avec droits limités,
+- adapter les valeurs par défaut (`DB_*`).
