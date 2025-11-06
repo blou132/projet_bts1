@@ -143,6 +143,37 @@ class Database
                 ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
 
+        $pdo->exec('CREATE TABLE IF NOT EXISTS courses (
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            ordre INT UNSIGNED NOT NULL,
+            code VARCHAR(10) NOT NULL,
+            nom VARCHAR(150) NOT NULL,
+            pays VARCHAR(120) NOT NULL,
+            ville VARCHAR(120) NOT NULL,
+            date_course DATE NOT NULL,
+            flag VARCHAR(8) NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+            UNIQUE KEY courses_code_unique (code)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+
+        $pdo->exec('CREATE TABLE IF NOT EXISTS course_results (
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            course_id INT UNSIGNED NOT NULL,
+            joueur_id INT UNSIGNED NOT NULL,
+            position TINYINT UNSIGNED NOT NULL,
+            points INT UNSIGNED NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+            CONSTRAINT fk_course_results_course FOREIGN KEY (course_id)
+                REFERENCES courses(id)
+                ON DELETE CASCADE,
+            CONSTRAINT fk_course_results_joueur FOREIGN KEY (joueur_id)
+                REFERENCES joueurs(id)
+                ON DELETE CASCADE,
+            UNIQUE KEY course_results_unique (course_id, joueur_id)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+
         $pdo->exec('CREATE TABLE IF NOT EXISTS users (
             id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             email VARCHAR(190) NOT NULL UNIQUE,
@@ -158,6 +189,8 @@ class Database
     {
         $pdo = self::getInstance();
         $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
+        $pdo->exec('DROP TABLE IF EXISTS course_results');
+        $pdo->exec('DROP TABLE IF EXISTS courses');
         $pdo->exec('DROP TABLE IF EXISTS joueurs');
         $pdo->exec('DROP TABLE IF EXISTS equipes');
         $pdo->exec('DROP TABLE IF EXISTS championnats');

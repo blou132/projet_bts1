@@ -356,6 +356,9 @@ main.container {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.18s ease, border 0.18s ease, box-shadow 0.18s ease;
 }
 
 .calendar-card header {
@@ -382,6 +385,125 @@ main.container {
 
 .calendar-meta {
   color: rgba(255, 255, 255, 0.6);
+}
+
+.calendar-card:hover,
+.calendar-card:focus {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35);
+}
+
+.calendar-card.is-active {
+  border-color: #e10600;
+  box-shadow: 0 18px 40px rgba(225, 6, 0, 0.35);
+}
+
+.results-panel {
+  background: rgba(17, 19, 31, 0.9);
+  border-radius: 16px;
+  padding: 24px 28px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.results-head h3 {
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+}
+
+.results-head p {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.results-table th,
+.results-table td {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.results-table thead {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.results-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.results-empty {
+  margin-top: 16px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.table-actions details {
+  display: inline-block;
+  width: 100%;
+}
+
+.table-actions form {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.table-actions label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.table-actions select,
+.table-actions input[type="number"] {
+  margin-top: 4px;
+}
+
+.table-actions button {
+  margin-top: 8px;
+}
+
+.result-form {
+  margin-top: 24px;
+}
+
+.result-form fieldset {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.result-form legend {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.result-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.result-form select,
+.result-form input[type="number"] {
+  min-height: 36px;
+}
+
+.alert.success {
+  background: rgba(0, 128, 64, 0.18);
+  border-color: rgba(0, 255, 157, 0.35);
+  color: #8ef6c0;
 }
 
 .standings-wrapper {

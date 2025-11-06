@@ -17,49 +17,62 @@ $heatLevel = static function (int $points): string {
     }
     return 'heat-zero';
 };
+
+$maxTotal = 0;
+foreach ($drivers as $driver) {
+    $maxTotal = max($maxTotal, (int)$driver['total']);
+}
 ?>
 <section class="season-view">
   <header class="season-head">
-    <h2>Classement pilotes (démonstration)</h2>
-    <p>Tableau inspiré des points cumulés par Grand Prix. Passez la souris pour consulter les scores par manche.</p>
+    <h2>Classement pilotes</h2>
+    <p>Total des points calculé automatiquement à partir des résultats officiels. Passez la souris sur les cellules pour voir les détails d'une manche.</p>
   </header>
 
-  <div class="standings-wrapper">
-    <table class="points-table">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Pilote</th>
-          <th scope="col">Écurie</th>
-          <?php foreach ($grandsPrix as $roundCode): ?>
-            <th scope="col" class="col-round" title="<?= htmlspecialchars($roundCode) ?>"><?= htmlspecialchars($roundCode) ?></th>
-          <?php endforeach; ?>
-          <th scope="col">Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php $rank = 1; ?>
-        <?php foreach ($drivers as $driver): ?>
+  <?php if (empty($drivers)): ?>
+    <p class="info-guest">Aucun pilote enregistré pour le moment.</p>
+  <?php else: ?>
+    <div class="standings-wrapper">
+      <table class="points-table">
+        <thead>
           <tr>
-            <th scope="row"><?= $rank ?></th>
-            <td>
-              <strong><?= htmlspecialchars($driver['code']) ?></strong>
-            </td>
-            <td><?= htmlspecialchars($driver['team']) ?></td>
-            <?php foreach ($driver['points'] as $pts): ?>
-              <td class="<?= $heatLevel((int)$pts) ?>" title="<?= (int)$pts ?> pt<?= ((int)$pts) === 1 ? '' : 's' ?>">
-                <?= $pts > 0 ? (int)$pts : '·' ?>
-              </td>
+            <th scope="col">#</th>
+            <th scope="col">Pilote</th>
+            <th scope="col">Écurie</th>
+            <?php foreach ($courses as $course): ?>
+              <th scope="col" class="col-round" title="<?= htmlspecialchars($course['nom']) ?>"><?= htmlspecialchars($course['code']) ?></th>
             <?php endforeach; ?>
-            <td class="total-cell">
-              <span class="total-value"><?= (int)$driver['total'] ?></span>
-              <?php $ratio = min(1, $driver['total'] / max(1, $drivers[0]['total'])); ?>
-              <span class="total-bar" style="--score: <?= number_format($ratio, 2, '.', '') ?>"></span>
-            </td>
+            <th scope="col">Total</th>
           </tr>
-          <?php $rank++; ?>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
-  </div>
+        </thead>
+        <tbody>
+          <?php $rank = 1; ?>
+          <?php foreach ($drivers as $driver): ?>
+            <?php $driverId = (int)$driver['id']; ?>
+            <tr>
+              <th scope="row"><?= $rank ?></th>
+              <td>
+                <strong><?= htmlspecialchars($driver['prenom'] . ' ' . $driver['nom']) ?></strong>
+              </td>
+              <td><?= htmlspecialchars($driver['equipe'] ?? '—') ?></td>
+              <?php foreach ($courses as $course): ?>
+                <?php $courseId = (int)$course['id']; ?>
+                <?php $cell = $pointsByDriver[$driverId][$courseId] ?? null; ?>
+                <?php $pts = $cell['points'] ?? 0; ?>
+                <td class="<?= $heatLevel((int)$pts) ?>" title="<?= $cell ? 'Position ' . (int)$cell['position'] . ' · ' . (int)$pts . ' pt' . ((int)$pts === 1 ? '' : 's') : 'Non classé' ?>">
+                  <?= $pts > 0 ? (int)$pts : '·' ?>
+                </td>
+              <?php endforeach; ?>
+              <td class="total-cell">
+                <span class="total-value"><?= (int)$driver['total'] ?></span>
+                <?php $denominator = $maxTotal > 0 ? $maxTotal : 1; ?>
+                <span class="total-bar" style="--score: <?= number_format(min(1, $driver['total'] / $denominator), 2, '.', '') ?>"></span>
+              </td>
+            </tr>
+            <?php $rank++; ?>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+  <?php endif; ?>
 </section>
