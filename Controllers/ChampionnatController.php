@@ -27,6 +27,7 @@ class ChampionnatController extends BaseController
 
     public function store(): void
     {
+        $this->requireAuth();
         $this->requireCsrf();
         $pdo = Database::getInstance();
         $nom = ValidationController::clean($_POST['nom'] ?? '');
@@ -46,6 +47,7 @@ class ChampionnatController extends BaseController
 
     public function update(): void
     {
+        $this->requireAuth();
         $this->requireCsrf();
         $pdo = Database::getInstance();
         $id = (int)($_POST['id'] ?? 0);
@@ -79,6 +81,7 @@ class ChampionnatController extends BaseController
 
     public function delete(): void
     {
+        $this->requireAuth();
         $this->requireCsrf();
         $pdo = Database::getInstance();
         $id = (int)($_POST['id'] ?? 0);

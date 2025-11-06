@@ -17,6 +17,14 @@ $web = new Web();
   </div>
   <div class="header-right">
     <?= $web->menu(); ?>
+    <?php if (!empty($currentUser)): ?>
+    <div class="user-chip">
+      <span class="user-name"><?= htmlspecialchars($currentUser['name'] ?? $currentUser['email'] ?? '') ?></span>
+      <a class="user-logout" href="?route=auth&action=logout">Déconnexion</a>
+    </div>
+    <?php else: ?>
+    <a class="btn login-link" href="?route=auth&action=login">Se connecter</a>
+    <?php endif; ?>
     <a class="f1-logo" href="https://www.formula1.com" target="_blank" rel="noopener">
       <img src="Public/assets/f1-logo.svg" alt="F1 logo">
     </a>

@@ -16,6 +16,7 @@ class BaseController
         if (!isset($data['csrfToken'])) {
             $data['csrfToken'] = Csrf::getToken();
         }
+        $data['currentUser'] = $data['currentUser'] ?? ($_SESSION['user'] ?? null);
         extract($data);
         require __DIR__ . '/../Views/layout/header.lame.php';
         require __DIR__ . '/../Views/' . $view;
@@ -96,6 +97,25 @@ class BaseController
         $query = http_build_query($params);
         header('Location: ?' . $query);
         exit;
+    }
+
+    protected function currentUser(): ?array
+    {
+        return $_SESSION['user'] ?? null;
+    }
+
+    protected function isAuthenticated(): bool
+    {
+        return isset($_SESSION['user']);
+    }
+
+    protected function requireAuth(): void
+    {
+        if ($this->isAuthenticated()) {
+            return;
+        }
+        $_SESSION['flash_error'] = 'Connexion requise pour effectuer cette action.';
+        $this->redirectTo('auth', ['action' => 'login']);
     }
 }
 

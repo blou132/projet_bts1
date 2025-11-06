@@ -5,7 +5,7 @@ La stack a été adaptée pour fonctionner avec **MySQL** (PDO, InnoDB, UTF-8).
 
 ## Installation
 
-1. **Cloner** le projet puis se placer dans le dossier `tpfootball/`.
+1. **Cloner** le projet puis se placer dans le dossier `F1/`.
 2. **Créer une base MySQL** (exemple) :
    ```sql
    CREATE DATABASE tpformula1 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -43,6 +43,15 @@ La stack a été adaptée pour fonctionner avec **MySQL** (PDO, InnoDB, UTF-8).
 - `?route=jointure` : vue synthétique pilotes/écuries.
 - `?route=calendrier` : calendrier saison 2026.
 - `?route=classements` : classement pilotes (heatmap démo).
+
+## Authentification
+
+- URL de connexion : `?route=auth&action=login`
+- Identifiant par défaut (chargé par `init_db.php`)  
+  - Email : `admin@example.com`  
+  - Mot de passe : `admin123`
+- Les pages publiques (accueil, listes, calendrier, classements) restent accessibles en lecture sans connexion.  
+  La modification (ajout, édition, suppression) requiert en revanche une session active.
 
 ## Dossier utile
 

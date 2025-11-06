@@ -4,7 +4,6 @@ declare(strict_types=1);
 require __DIR__ . '/Autoload.php';
 
 use App\Database\Database;
-use PDOException;
 
 // Réinitialise complètement le schéma (DROP + CREATE) puis charge un jeu de données d'exemple.
 Database::reset();
@@ -33,6 +32,14 @@ $pilotes = [
     ['nom' => 'Sainz',      'prenom' => 'Carlos',  'poste' => 'Pilote titulaire', 'equipe' => 3, 'photo' => null],
 ];
 
+$users = [
+    [
+        'name' => 'Administrateur',
+        'email' => 'admin@example.com',
+        'password' => password_hash('admin123', PASSWORD_DEFAULT),
+    ],
+];
+
 try {
     $pdo->beginTransaction();
 
@@ -51,9 +58,14 @@ try {
         $stmtPilote->execute([$pilote['nom'], $pilote['prenom'], $pilote['poste'], $pilote['equipe'], $pilote['photo']]);
     }
 
+    $stmtUser = $pdo->prepare('INSERT INTO users (name, email, password) VALUES (?, ?, ?)');
+    foreach ($users as $user) {
+        $stmtUser->execute([$user['name'], $user['email'], $user['password']]);
+    }
+
     $pdo->commit();
     echo "Base MySQL réinitialisée avec jeu de données de démonstration.\n";
-} catch (PDOException $e) {
+} catch (\PDOException $e) {
     $pdo->rollBack();
     fwrite(STDERR, 'Erreur lors de la réinitialisation : ' . $e->getMessage() . PHP_EOL);
     exit(1);

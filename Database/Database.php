@@ -142,6 +142,15 @@ class Database
                 REFERENCES equipes(id)
                 ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+
+        $pdo->exec('CREATE TABLE IF NOT EXISTS users (
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            email VARCHAR(190) NOT NULL UNIQUE,
+            password VARCHAR(255) NOT NULL,
+            name VARCHAR(100) NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
     }
 
     /** Danger ! Supprime tout. */
@@ -152,6 +161,7 @@ class Database
         $pdo->exec('DROP TABLE IF EXISTS joueurs');
         $pdo->exec('DROP TABLE IF EXISTS equipes');
         $pdo->exec('DROP TABLE IF EXISTS championnats');
+        $pdo->exec('DROP TABLE IF EXISTS users');
         $pdo->exec('SET FOREIGN_KEY_CHECKS = 1');
     }
 

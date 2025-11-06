@@ -34,6 +34,8 @@
 | SEC01 | Jeton CSRF manquant | Envoyer POST sans `_csrf` | Réponse 419 + message « Jeton CSRF invalide » |
 | SEC02 | Injection HTML | Saisir `<script>` dans nom | Affichage échappé dans la table |
 | SEC03 | Upload non image | Joindre `.exe` | Upload refusé, valeur null |
+| SEC04 | Auth requise pour modifications | Envoyer POST `?route=championnats&action=store` sans session | Redirection vers login |
+| SEC05 | Lecture publique | Visiter `?route=championnats` sans session | Liste visible, formulaires masqués |
 
 ## Accessibilité / UX
 

@@ -17,7 +17,7 @@ class HtmlController
             'Pilotes' => '?route=joueurs',
             'Pilotes par écurie' => '?route=jointure',
             'Calendrier 2026' => '?route=calendrier',
-            'Classement démo' => '?route=classements',
+            'Classement' => '?route=classements',
         ];
         $html = '<nav class="main-nav"><ul class="nav-list">';
         foreach ($items as $label => $href) {
