@@ -5,8 +5,8 @@ La stack a été adaptée pour fonctionner avec **MySQL** (PDO, InnoDB, UTF-8).
 
 ## Installation
 
-1. **Cloner** le projet puis se placer dans le dossier `F1/`.
-2. **Créer une base MySQL** (exemple) :
+1. **Cloner** le projet puis se placer dans ce dossier.
+2. **Créer la base MySQL** (à faire une seule fois) :
    ```sql
    CREATE DATABASE tpformula1 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
    ```
@@ -14,7 +14,7 @@ La stack a été adaptée pour fonctionner avec **MySQL** (PDO, InnoDB, UTF-8).
    - via fichier `.env` (recommandé) :
      ```bash
      cp .env.example .env
-     # éditez .env pour refléter votre configuration (ex. DB_NAME=projetF1, DB_PASS=123456789)
+     # éditez .env avec vos identifiants MySQL
      ```
    - ou via export dans votre terminal :
      ```bash
@@ -33,6 +33,11 @@ La stack a été adaptée pour fonctionner avec **MySQL** (PDO, InnoDB, UTF-8).
    php -S localhost:8000
    ```
 6. Ouvrir `http://localhost:8000/index.php`.
+
+> ⚠️ Erreurs de connexion fréquentes :
+> - `Access denied for user 'root'@'localhost' (using password: NO)` → mot de passe manquant dans `.env`.
+> - `Unknown database 'tpformula1'` → la base n'a pas été créée (`CREATE DATABASE ...` à rejouer).
+> - Après modification des identifiants, relancez `php init_db.php` pour vérifier que la connexion est correcte avant de démarrer le serveur.
 
 ## Navigation
 
