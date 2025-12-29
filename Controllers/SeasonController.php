@@ -33,7 +33,7 @@ class SeasonController extends BaseController
             }
 
             if ($selectedCourse) {
-                $stmt = $pdo->prepare('SELECT cr.id AS result_id, cr.position, cr.points, j.id AS joueur_id, j.prenom, j.nom, e.nom AS equipe
+                $stmt = $pdo->prepare('SELECT cr.id AS result_id, cr.position, cr.points, j.id AS pilote_id, j.prenom, j.nom, e.nom AS ecurie
                                        FROM course_results cr
                                        JOIN joueurs j ON j.id = cr.joueur_id
                                        JOIN equipes e ON e.id = j.id_equipe
@@ -44,7 +44,7 @@ class SeasonController extends BaseController
             }
         }
 
-        $drivers = $pdo->query('SELECT j.id, j.prenom, j.nom, e.nom AS equipe
+        $drivers = $pdo->query('SELECT j.id, j.prenom, j.nom, e.nom AS ecurie
                                 FROM joueurs j
                                 JOIN equipes e ON e.id = j.id_equipe
                                 ORDER BY e.nom, j.nom')->fetchAll();
@@ -72,19 +72,19 @@ class SeasonController extends BaseController
 
         $courses = $pdo->query('SELECT id, ordre, code, nom FROM courses ORDER BY ordre')->fetchAll();
 
-        $drivers = $pdo->query('SELECT j.id, j.nom, j.prenom, e.nom AS equipe, COALESCE(SUM(cr.points), 0) AS total
+        $drivers = $pdo->query('SELECT j.id, j.nom, j.prenom, e.nom AS ecurie, COALESCE(SUM(cr.points), 0) AS total
                                 FROM joueurs j
                                 LEFT JOIN equipes e ON e.id = j.id_equipe
                                 LEFT JOIN course_results cr ON cr.joueur_id = j.id
-                                GROUP BY j.id, j.nom, j.prenom, equipe
+                                GROUP BY j.id, j.nom, j.prenom, e.nom
                                 ORDER BY total DESC, j.nom, j.prenom')->fetchAll();
 
         $pointsByDriver = [];
         $stmt = $pdo->query('SELECT course_id, joueur_id, points, position FROM course_results');
         foreach ($stmt->fetchAll() as $row) {
-            $joueurId = (int)$row['joueur_id'];
+            $piloteId = (int)$row['joueur_id'];
             $courseId = (int)$row['course_id'];
-            $pointsByDriver[$joueurId][$courseId] = [
+            $pointsByDriver[$piloteId][$courseId] = [
                 'points' => (int)$row['points'],
                 'position' => (int)$row['position'],
             ];
@@ -104,11 +104,11 @@ class SeasonController extends BaseController
         $this->requireCsrf();
 
         $courseId = (int)($_POST['course_id'] ?? 0);
-        $joueurId = (int)($_POST['joueur_id'] ?? 0);
+        $piloteId = (int)($_POST['pilote_id'] ?? 0);
         $position = (int)($_POST['position'] ?? 0);
         $points = (int)($_POST['points'] ?? 0);
 
-        $errors = $this->validateResult($courseId, $joueurId, $position, $points);
+        $errors = $this->validateResult($courseId, $piloteId, $position, $points);
         if ($errors) {
             $_SESSION['calendar_errors'] = $errors;
             $this->redirectTo('calendrier', ['course' => $courseId]);
@@ -116,7 +116,7 @@ class SeasonController extends BaseController
 
         Database::query(
             'INSERT INTO course_results (course_id, joueur_id, position, points) VALUES (?, ?, ?, ?)',
-            [$courseId, $joueurId, $position, $points]
+            [$courseId, $piloteId, $position, $points]
         );
         $_SESSION['calendar_flash'] = 'Résultat ajouté.';
         $this->redirectTo('calendrier', ['course' => $courseId]);
@@ -130,7 +130,7 @@ class SeasonController extends BaseController
 
         $resultId = (int)($_POST['result_id'] ?? 0);
         $courseId = (int)($_POST['course_id'] ?? 0);
-        $joueurId = (int)($_POST['joueur_id'] ?? 0);
+        $piloteId = (int)($_POST['pilote_id'] ?? 0);
         $position = (int)($_POST['position'] ?? 0);
         $points = (int)($_POST['points'] ?? 0);
 
@@ -146,7 +146,7 @@ class SeasonController extends BaseController
         }
         $courseId = (int)$exists;
 
-        $errors = $this->validateResult($courseId, $joueurId, $position, $points, $resultId);
+        $errors = $this->validateResult($courseId, $piloteId, $position, $points, $resultId);
         if ($errors) {
             $_SESSION['calendar_errors'] = $errors;
             $this->redirectTo('calendrier', ['course' => $courseId]);
@@ -154,7 +154,7 @@ class SeasonController extends BaseController
 
         Database::query(
             'UPDATE course_results SET joueur_id = ?, position = ?, points = ? WHERE id = ?',
-            [$joueurId, $position, $points, $resultId]
+            [$piloteId, $position, $points, $resultId]
         );
         $_SESSION['calendar_flash'] = 'Résultat mis à jour.';
         $this->redirectTo('calendrier', ['course' => $courseId]);
@@ -187,13 +187,13 @@ class SeasonController extends BaseController
      * Valide un résultat de course et retourne un tableau d'erreurs.
      *
      * @param int $courseId
-     * @param int $joueurId
+     * @param int $piloteId
      * @param int $position
      * @param int $points
      * @param int|null $excludeId
      * @return array<int, string>
      */
-    private function validateResult(int $courseId, int $joueurId, int $position, int $points, ?int $excludeId = null): array
+    private function validateResult(int $courseId, int $piloteId, int $position, int $points, ?int $excludeId = null): array
     {
         $errors = [];
 
@@ -206,10 +206,10 @@ class SeasonController extends BaseController
             }
         }
 
-        if ($joueurId <= 0) {
+        if ($piloteId <= 0) {
             $errors[] = 'Pilote invalide.';
         } else {
-            $driverExists = Database::query('SELECT 1 FROM joueurs WHERE id = ?', [$joueurId])->fetchColumn();
+            $driverExists = Database::query('SELECT 1 FROM joueurs WHERE id = ?', [$piloteId])->fetchColumn();
             if (!$driverExists) {
                 $errors[] = 'Pilote introuvable.';
             }
@@ -223,7 +223,7 @@ class SeasonController extends BaseController
         }
 
         if (!$errors) {
-            $params = [$courseId, $joueurId];
+            $params = [$courseId, $piloteId];
             $sql = 'SELECT id FROM course_results WHERE course_id = ? AND joueur_id = ?';
             if ($excludeId !== null) {
                 $sql .= ' AND id <> ?';

@@ -78,7 +78,7 @@
             <?php endif; ?>
             <div>
               <strong><?= htmlspecialchars($pilote['prenom'] . ' ' . $pilote['nom']) ?></strong>
-              <span><?= htmlspecialchars($pilote['equipe']) ?></span>
+              <span><?= htmlspecialchars($pilote['ecurie']) ?></span>
             </div>
           </article>
         <?php endforeach; ?>

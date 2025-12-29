@@ -14,9 +14,12 @@ class EquipeController extends BaseController
     private function renderList(array $errors = []): void
     {
         $pdo = Database::getInstance();
-        $equipes = $pdo->query('SELECT e.*, c.nom AS championnat FROM equipes e JOIN championnats c ON c.id=e.id_championnat ORDER BY e.nom')->fetchAll();
+        $ecuries = $pdo->query('SELECT e.id, e.nom, e.ville AS pays, e.id_championnat, e.blason, c.nom AS championnat
+                                FROM equipes e
+                                JOIN championnats c ON c.id=e.id_championnat
+                                ORDER BY e.nom')->fetchAll();
         $championnats = $pdo->query('SELECT * FROM championnats ORDER BY nom')->fetchAll();
-        $this->render('equipe.lame.php', compact('equipes', 'championnats', 'errors'));
+        $this->render('equipe.lame.php', compact('ecuries', 'championnats', 'errors'));
     }
 
     public function index(): void
@@ -30,11 +33,11 @@ class EquipeController extends BaseController
         $this->requireCsrf();
         $pdo = Database::getInstance();
         $nom = ValidationController::clean($_POST['nom'] ?? '');
-        $ville = ValidationController::clean($_POST['ville'] ?? '');
+        $pays = ValidationController::clean($_POST['pays'] ?? '');
         $idc = (int)($_POST['id_championnat'] ?? 0);
         $errors = [];
         if (!ValidationController::nom($nom)) $errors[] = 'Nom d\'écurie invalide';
-        if (!ValidationController::ville($ville)) $errors[] = 'Ville / base invalide';
+        if (!ValidationController::pays($pays)) $errors[] = 'Pays invalide';
         if ($idc <= 0) $errors[] = 'Grand Prix requis';
         $blason = $this->handleImageUpload('blason');
         if ($idc > 0) {
@@ -49,8 +52,8 @@ class EquipeController extends BaseController
             return;
         }
         $pdo->prepare('INSERT INTO equipes(nom,ville,id_championnat,blason) VALUES (?,?,?,?)')
-            ->execute([$nom,$ville,$idc,$blason]);
-        $this->redirectTo('equipes');
+            ->execute([$nom,$pays,$idc,$blason]);
+        $this->redirectTo('ecuries');
     }
 
     public function update(): void
@@ -60,13 +63,13 @@ class EquipeController extends BaseController
         $pdo = Database::getInstance();
         $id = (int)($_POST['id'] ?? 0);
         $nom = ValidationController::clean($_POST['nom'] ?? '');
-        $ville = ValidationController::clean($_POST['ville'] ?? '');
+        $pays = ValidationController::clean($_POST['pays'] ?? '');
         $idc = (int)($_POST['id_championnat'] ?? 0);
         $blason = $this->handleImageUpload('blason') ?? $this->sanitizeExistingUpload('blason_exist');
         $errors = [];
         if ($id <= 0) $errors[] = 'Identifiant invalide';
         if (!ValidationController::nom($nom)) $errors[] = 'Nom d\'écurie invalide';
-        if (!ValidationController::ville($ville)) $errors[] = 'Ville / base invalide';
+        if (!ValidationController::pays($pays)) $errors[] = 'Pays invalide';
         if ($idc <= 0) $errors[] = 'Grand Prix requis';
 
         if (!$errors) {
@@ -91,8 +94,8 @@ class EquipeController extends BaseController
         }
 
         $pdo->prepare('UPDATE equipes SET nom=?, ville=?, id_championnat=?, blason=? WHERE id=?')
-            ->execute([$nom,$ville,$idc,$blason,$id]);
-        $this->redirectTo('equipes');
+            ->execute([$nom,$pays,$idc,$blason,$id]);
+        $this->redirectTo('ecuries');
     }
 
     public function delete(): void
@@ -117,7 +120,7 @@ class EquipeController extends BaseController
             return;
         }
 
-        $this->redirectTo('equipes');
+        $this->redirectTo('ecuries');
     }
 }
 

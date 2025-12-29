@@ -54,7 +54,7 @@ foreach ($drivers as $driver) {
               <td>
                 <strong><?= htmlspecialchars($driver['prenom'] . ' ' . $driver['nom']) ?></strong>
               </td>
-              <td><?= htmlspecialchars($driver['equipe'] ?? '—') ?></td>
+              <td><?= htmlspecialchars($driver['ecurie'] ?? '—') ?></td>
               <?php foreach ($courses as $course): ?>
                 <?php $courseId = (int)$course['id']; ?>
                 <?php $cell = $pointsByDriver[$driverId][$courseId] ?? null; ?>

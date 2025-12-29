@@ -13,8 +13,8 @@ class HtmlController
         $items = [
             'Accueil' => '?route=accueil',
             'Grands Prix' => '?route=championnats',
-            'Écuries' => '?route=equipes',
-            'Pilotes' => '?route=joueurs',
+            'Écuries' => '?route=ecuries',
+            'Pilotes' => '?route=pilotes',
             'Pilotes par écurie' => '?route=jointure',
             'Calendrier 2026' => '?route=calendrier',
             'Classement' => '?route=classements',

@@ -7,7 +7,7 @@
   <?php endif; ?>
 
   <?php if (!empty($currentUser)): ?>
-    <form method="post" enctype="multipart/form-data" action="?route=joueurs&action=store">
+    <form method="post" enctype="multipart/form-data" action="?route=pilotes&action=store">
       <fieldset>
         <legend>Ajouter un pilote</legend>
         <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
@@ -15,10 +15,10 @@
         <label>Prénom <input name="prenom" type="text" required></label><br/>
         <label>Rôle <input name="poste" type="text" placeholder="Pilote titulaire / Réserve..." required></label><br/>
         <label>Écurie
-          <select name="id_equipe" required>
+          <select name="id_ecurie" required>
             <option value="">— choisir —</option>
-            <?php foreach ($equipes as $e): ?>
-              <option value="<?= $e['id'] ?>"><?= htmlspecialchars($e['nom']) ?></option>
+            <?php foreach ($ecuries as $ecurie): ?>
+              <option value="<?= $ecurie['id'] ?>"><?= htmlspecialchars($ecurie['nom']) ?></option>
             <?php endforeach; ?>
           </select>
         </label><br/>
@@ -35,37 +35,37 @@
   <table>
     <thead><tr><th>ID</th><th>Nom</th><th>Prénom</th><th>Rôle</th><th>Écurie</th><th>Portrait</th><?php if (!empty($currentUser)): ?><th>Actions</th><?php endif; ?></tr></thead>
     <tbody>
-    <?php foreach ($joueurs as $j): ?>
+    <?php foreach ($pilotes as $pilote): ?>
       <tr>
-        <td><?= $j['id'] ?></td>
-        <td><?= htmlspecialchars($j['nom']) ?></td>
-        <td><?= htmlspecialchars($j['prenom']) ?></td>
-        <td><?= htmlspecialchars($j['poste']) ?></td>
-        <td><?= htmlspecialchars($j['equipe']) ?></td>
-        <td><?php if ($j['photo']): ?><img src="<?= htmlspecialchars($j['photo']) ?>" alt="portrait pilote" class="thumb"><?php endif; ?></td>
+        <td><?= $pilote['id'] ?></td>
+        <td><?= htmlspecialchars($pilote['nom']) ?></td>
+        <td><?= htmlspecialchars($pilote['prenom']) ?></td>
+        <td><?= htmlspecialchars($pilote['poste']) ?></td>
+        <td><?= htmlspecialchars($pilote['ecurie']) ?></td>
+        <td><?php if ($pilote['photo']): ?><img src="<?= htmlspecialchars($pilote['photo']) ?>" alt="portrait pilote" class="thumb"><?php endif; ?></td>
         <?php if (!empty($currentUser)): ?>
         <td>
           <details>
             <summary>Éditer</summary>
-              <form method="post" enctype="multipart/form-data" action="?route=joueurs&action=update">
-                <input type="hidden" name="id" value="<?= $j['id'] ?>">
+              <form method="post" enctype="multipart/form-data" action="?route=pilotes&action=update">
+                <input type="hidden" name="id" value="<?= $pilote['id'] ?>">
                 <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
-                <label>Nom <input name="nom" value="<?= htmlspecialchars($j['nom']) ?>" required></label>
-                <label>Prénom <input name="prenom" value="<?= htmlspecialchars($j['prenom']) ?>" required></label>
-                <label>Rôle <input name="poste" value="<?= htmlspecialchars($j['poste']) ?>" required></label>
+                <label>Nom <input name="nom" value="<?= htmlspecialchars($pilote['nom']) ?>" required></label>
+                <label>Prénom <input name="prenom" value="<?= htmlspecialchars($pilote['prenom']) ?>" required></label>
+                <label>Rôle <input name="poste" value="<?= htmlspecialchars($pilote['poste']) ?>" required></label>
                 <label>Écurie
-                  <select name="id_equipe" required>
-                    <?php foreach ($equipes as $e): ?>
-                      <option value="<?= $e['id'] ?>" <?= $e['id']==$j['id_equipe']?'selected':'' ?>><?= htmlspecialchars($e['nom']) ?></option>
+                  <select name="id_ecurie" required>
+                    <?php foreach ($ecuries as $ecurie): ?>
+                      <option value="<?= $ecurie['id'] ?>" <?= $ecurie['id']==$pilote['id_ecurie']?'selected':'' ?>><?= htmlspecialchars($ecurie['nom']) ?></option>
                     <?php endforeach; ?>
                   </select>
                 </label>
-                <?php if ($j['photo']): ?><input type="hidden" name="photo_exist" value="<?= htmlspecialchars($j['photo']) ?>"><?php endif; ?>
+                <?php if ($pilote['photo']): ?><input type="hidden" name="photo_exist" value="<?= htmlspecialchars($pilote['photo']) ?>"><?php endif; ?>
                 <label>Nouveau portrait <input type="file" name="photo" accept="image/*"></label>
                 <button>Mettre à jour</button>
               </form>
-              <form method="post" action="?route=joueurs&action=delete" onsubmit="return confirm('Supprimer ce pilote&nbsp;?')">
-                <input type="hidden" name="id" value="<?= $j['id'] ?>">
+              <form method="post" action="?route=pilotes&action=delete" onsubmit="return confirm('Supprimer ce pilote&nbsp;?')">
+                <input type="hidden" name="id" value="<?= $pilote['id'] ?>">
                 <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
                 <button class="danger">Supprimer</button>
               </form>

@@ -62,7 +62,7 @@
               <tr>
                 <td><?= (int)$row['position'] ?></td>
                 <td><?= htmlspecialchars($row['prenom'] . ' ' . $row['nom']) ?></td>
-                <td><?= htmlspecialchars($row['equipe']) ?></td>
+                <td><?= htmlspecialchars($row['ecurie']) ?></td>
                 <td><?= (int)$row['points'] ?></td>
                 <?php if (!empty($currentUser)): ?>
                   <td class="table-actions">
@@ -73,10 +73,10 @@
                         <input type="hidden" name="result_id" value="<?= (int)$row['result_id'] ?>">
                         <input type="hidden" name="course_id" value="<?= (int)$selectedCourse['id'] ?>">
                         <label>Pilote
-                          <select name="joueur_id" required>
+                          <select name="pilote_id" required>
                             <?php foreach ($drivers as $driver): ?>
-                              <option value="<?= (int)$driver['id'] ?>" <?= (int)$driver['id'] === (int)$row['joueur_id'] ? 'selected' : '' ?>>
-                                <?= htmlspecialchars($driver['prenom'] . ' ' . $driver['nom'] . ' — ' . $driver['equipe']) ?>
+                              <option value="<?= (int)$driver['id'] ?>" <?= (int)$driver['id'] === (int)$row['pilote_id'] ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($driver['prenom'] . ' ' . $driver['nom'] . ' — ' . $driver['ecurie']) ?>
                               </option>
                             <?php endforeach; ?>
                           </select>
@@ -108,11 +108,11 @@
             <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
             <input type="hidden" name="course_id" value="<?= (int)$selectedCourse['id'] ?>">
             <label>Pilote
-              <select name="joueur_id" required>
+              <select name="pilote_id" required>
                 <option value="">— choisir un pilote —</option>
                 <?php foreach ($drivers as $driver): ?>
                   <option value="<?= (int)$driver['id'] ?>">
-                    <?= htmlspecialchars($driver['prenom'] . ' ' . $driver['nom'] . ' — ' . $driver['equipe']) ?>
+                    <?= htmlspecialchars($driver['prenom'] . ' ' . $driver['nom'] . ' — ' . $driver['ecurie']) ?>
                   </option>
                 <?php endforeach; ?>
               </select>

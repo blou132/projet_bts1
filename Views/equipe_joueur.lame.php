@@ -5,7 +5,7 @@
     <tbody>
       <?php foreach ($rows as $r): ?>
         <tr>
-          <td><?= htmlspecialchars($r['equipe']) ?></td>
+          <td><?= htmlspecialchars($r['ecurie']) ?></td>
           <td><?php if ($r['blason']): ?><img src="<?= htmlspecialchars($r['blason']) ?>" class="thumb" alt="logo écurie"><?php endif; ?></td>
           <td><?= htmlspecialchars($r['prenom'] . ' ' . $r['nom']) ?></td>
           <td><?= htmlspecialchars($r['poste']) ?></td>

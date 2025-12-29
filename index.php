@@ -36,7 +36,9 @@ $isPost = ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST';
 $publicRoutes = [
     'accueil' => ['index'],
     'championnats' => ['index'],
+    'ecuries' => ['index'],
     'equipes' => ['index'],
+    'pilotes' => ['index'],
     'joueurs' => ['index'],
     'jointure' => ['index', 'withEquipes'],
     'calendrier' => ['index', 'calendar'],
@@ -73,7 +75,7 @@ switch ($route) {
                                   GROUP BY e.id
                                   ORDER BY pilotes DESC, e.nom
                                   LIMIT 3')->fetchAll();
-        $pilotesSpotlight = $pdo->query('SELECT j.nom, j.prenom, j.photo, e.nom AS equipe
+        $pilotesSpotlight = $pdo->query('SELECT j.nom, j.prenom, j.photo, e.nom AS ecurie
                                           FROM joueurs j
                                           JOIN equipes e ON e.id = j.id_equipe
                                           ORDER BY j.nom
@@ -88,10 +90,12 @@ switch ($route) {
         $controller = new ChampionnatController();
         break;
 
+    case 'ecuries':
     case 'equipes':
         $controller = new EquipeController();
         break;
 
+    case 'pilotes':
     case 'joueurs':
         $controller = new JoueurController();
         break;

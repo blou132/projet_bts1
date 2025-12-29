@@ -18,9 +18,9 @@ $grandsPrix = [
 ];
 
 $equipes = [
-    ['nom' => 'Mercedes-AMG Petronas', 'ville' => 'Brackley',      'championnat' => 3, 'blason' => null],
-    ['nom' => 'Oracle Red Bull Racing','ville' => 'Milton Keynes', 'championnat' => 1, 'blason' => null],
-    ['nom' => 'Scuderia Ferrari',      'ville' => 'Maranello',     'championnat' => 2, 'blason' => null],
+    ['nom' => 'Mercedes-AMG Petronas', 'pays' => 'Royaume-Uni', 'championnat' => 3, 'blason' => null],
+    ['nom' => 'Oracle Red Bull Racing','pays' => 'Royaume-Uni', 'championnat' => 1, 'blason' => null],
+    ['nom' => 'Scuderia Ferrari',      'pays' => 'Italie',      'championnat' => 2, 'blason' => null],
 ];
 
 $courses = [
@@ -107,7 +107,7 @@ try {
 
     $stmtEquipe = $pdo->prepare('INSERT INTO equipes (nom, ville, id_championnat, blason) VALUES (?, ?, ?, ?)');
     foreach ($equipes as $equipe) {
-        $stmtEquipe->execute([$equipe['nom'], $equipe['ville'], $equipe['championnat'], $equipe['blason']]);
+        $stmtEquipe->execute([$equipe['nom'], $equipe['pays'], $equipe['championnat'], $equipe['blason']]);
     }
 
     $stmtCourse = $pdo->prepare('INSERT INTO courses (ordre, code, nom, pays, ville, date_course, flag) VALUES (?, ?, ?, ?, ?, ?, ?)');
