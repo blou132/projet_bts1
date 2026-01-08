@@ -19,6 +19,9 @@
 
     <form method="post" action="?route=auth&action=store">
       <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
+      <?php if (!empty($_GET['redirect'])): ?>
+        <input type="hidden" name="redirect" value="<?= htmlspecialchars((string)$_GET['redirect']) ?>">
+      <?php endif; ?>
       <label>
         Nom
         <input type="text" name="name" value="<?= htmlspecialchars($old['name'] ?? '') ?>" required>

@@ -19,6 +19,9 @@
 
     <form method="post" action="?route=auth&action=authenticate">
       <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
+      <?php if (!empty($_GET['redirect'])): ?>
+        <input type="hidden" name="redirect" value="<?= htmlspecialchars((string)$_GET['redirect']) ?>">
+      <?php endif; ?>
       <label>
         Adresse e-mail
         <input type="email" name="email" value="<?= htmlspecialchars($old['email'] ?? '') ?>" required>

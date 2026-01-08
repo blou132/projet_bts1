@@ -5,7 +5,23 @@
   </header>
 
   <?php if (empty($currentUser)): ?>
-    <p class="info-guest">Connectez-vous pour parier. <a href="?route=auth&action=login">Se connecter</a></p>
+    <div class="bet-login" id="bet">
+      <p class="auth-subtitle">Connectez-vous pour parier.</p>
+      <form method="post" action="?route=auth&action=authenticate">
+        <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
+        <input type="hidden" name="redirect" value="<?= htmlspecialchars('?route=calendrier&action=course&course=' . (int)$course['id'] . '#bet') ?>">
+        <label>
+          Adresse e-mail
+          <input type="email" name="email" required>
+        </label>
+        <label>
+          Mot de passe
+          <input type="password" name="password" required>
+        </label>
+        <button type="submit" class="btn">Se connecter</button>
+      </form>
+      <p class="auth-subtitle">Pas encore de compte ? <a href="?route=auth&action=register&redirect=<?= htmlspecialchars('?route=calendrier&action=course&course=' . (int)$course['id'] . '#bet') ?>">Creer un compte</a></p>
+    </div>
   <?php else: ?>
     <?php if (!empty($betErrors)): ?>
       <div class="alert">

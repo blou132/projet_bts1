@@ -6,7 +6,7 @@
     </div>
   <?php endif; ?>
 
-  <?php if (!empty($currentUser)): ?>
+  <?php if (!empty($isAdmin)): ?>
     <form method="post" enctype="multipart/form-data" action="?route=ecuries&action=store">
       <fieldset>
         <legend>Ajouter une écurie</legend>
@@ -38,7 +38,7 @@
   </div>
 
   <table id="ecuries-table" data-sortable="true">
-    <thead><tr><th>ID</th><th>Écurie</th><th>Pays</th><th>Grand Prix</th><th data-sort="false">Logo</th><?php if (!empty($currentUser)): ?><th data-sort="false">Actions</th><?php endif; ?></tr></thead>
+    <thead><tr><th>ID</th><th>Écurie</th><th>Pays</th><th>Grand Prix</th><th data-sort="false">Logo</th><?php if (!empty($isAdmin)): ?><th data-sort="false">Actions</th><?php endif; ?></tr></thead>
     <tbody>
     <?php foreach ($ecuries as $ecurie): ?>
       <tr>
@@ -47,7 +47,7 @@
         <td><?= htmlspecialchars($ecurie['pays']) ?></td>
         <td><?= htmlspecialchars($ecurie['championnat']) ?></td>
         <td><?php if ($ecurie['blason']): ?><img src="<?= htmlspecialchars($ecurie['blason']) ?>" alt="logo écurie" class="thumb"><?php endif; ?></td>
-        <?php if (!empty($currentUser)): ?>
+        <?php if (!empty($isAdmin)): ?>
         <td>
           <details>
             <summary>Éditer</summary>

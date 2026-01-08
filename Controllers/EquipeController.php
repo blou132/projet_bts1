@@ -29,7 +29,7 @@ class EquipeController extends BaseController
 
     public function store(): void
     {
-        $this->requireAuth();
+        $this->requireAdmin();
         $this->requireCsrf();
         $pdo = Database::getInstance();
         $nom = ValidationController::clean($_POST['nom'] ?? '');
@@ -58,7 +58,7 @@ class EquipeController extends BaseController
 
     public function update(): void
     {
-        $this->requireAuth();
+        $this->requireAdmin();
         $this->requireCsrf();
         $pdo = Database::getInstance();
         $id = (int)($_POST['id'] ?? 0);
@@ -100,7 +100,7 @@ class EquipeController extends BaseController
 
     public function delete(): void
     {
-        $this->requireAuth();
+        $this->requireAdmin();
         $this->requireCsrf();
         $id = (int)($_POST['id'] ?? 0);
         $pdo = Database::getInstance();

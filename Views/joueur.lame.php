@@ -6,7 +6,7 @@
     </div>
   <?php endif; ?>
 
-  <?php if (!empty($currentUser)): ?>
+  <?php if (!empty($isAdmin)): ?>
     <form method="post" enctype="multipart/form-data" action="?route=pilotes&action=store">
       <fieldset>
         <legend>Ajouter un pilote</legend>
@@ -39,7 +39,7 @@
   </div>
 
   <table id="pilotes-table" data-sortable="true">
-    <thead><tr><th>ID</th><th>Nom</th><th>Prénom</th><th>Rôle</th><th>Écurie</th><th data-sort="false">Portrait</th><?php if (!empty($currentUser)): ?><th data-sort="false">Actions</th><?php endif; ?></tr></thead>
+    <thead><tr><th>ID</th><th>Nom</th><th>Prénom</th><th>Rôle</th><th>Écurie</th><th data-sort="false">Portrait</th><?php if (!empty($isAdmin)): ?><th data-sort="false">Actions</th><?php endif; ?></tr></thead>
     <tbody>
     <?php foreach ($pilotes as $pilote): ?>
       <tr>
@@ -49,7 +49,7 @@
         <td><?= htmlspecialchars($pilote['poste']) ?></td>
         <td><?= htmlspecialchars($pilote['ecurie']) ?></td>
         <td><?php if ($pilote['photo']): ?><img src="<?= htmlspecialchars($pilote['photo']) ?>" alt="portrait pilote" class="thumb"><?php endif; ?></td>
-        <?php if (!empty($currentUser)): ?>
+        <?php if (!empty($isAdmin)): ?>
         <td>
           <details>
             <summary>Éditer</summary>

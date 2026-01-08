@@ -17,6 +17,7 @@ class BaseController
             $data['csrfToken'] = Csrf::getToken();
         }
         $data['currentUser'] = $data['currentUser'] ?? ($_SESSION['user'] ?? null);
+        $data['isAdmin'] = $data['isAdmin'] ?? $this->isAdmin();
         extract($data);
         require __DIR__ . '/../Views/layout/header.lame.php';
         require __DIR__ . '/../Views/' . $view;
@@ -109,6 +110,11 @@ class BaseController
         return isset($_SESSION['user']);
     }
 
+    protected function isAdmin(): bool
+    {
+        return isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === 'admin';
+    }
+
     protected function requireAuth(): void
     {
         if ($this->isAuthenticated()) {
@@ -116,6 +122,18 @@ class BaseController
         }
         $_SESSION['flash_error'] = 'Connexion requise pour effectuer cette action.';
         $this->redirectTo('auth', ['action' => 'login']);
+    }
+
+    protected function requireAdmin(): void
+    {
+        if (!$this->isAuthenticated()) {
+            $_SESSION['flash_error'] = 'Connexion requise pour effectuer cette action.';
+            $this->redirectTo('auth', ['action' => 'login']);
+        }
+        if (!$this->isAdmin()) {
+            http_response_code(403);
+            exit('Acces reserve a l administrateur.');
+        }
     }
 }
 

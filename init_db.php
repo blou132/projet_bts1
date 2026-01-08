@@ -94,6 +94,7 @@ $users = [
         'name' => 'Administrateur',
         'email' => 'admin@example.com',
         'password' => password_hash('admin123', PASSWORD_DEFAULT),
+        'role' => 'admin',
     ],
 ];
 
@@ -131,9 +132,9 @@ try {
         $stmtResult->execute([$courseIds[$code], $result['joueur'], $result['position'], $result['points']]);
     }
 
-    $stmtUser = $pdo->prepare('INSERT INTO users (name, email, password) VALUES (?, ?, ?)');
+    $stmtUser = $pdo->prepare('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)');
     foreach ($users as $user) {
-        $stmtUser->execute([$user['name'], $user['email'], $user['password']]);
+        $stmtUser->execute([$user['name'], $user['email'], $user['password'], $user['role']]);
     }
 
     $pdo->commit();

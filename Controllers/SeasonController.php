@@ -106,7 +106,7 @@ class SeasonController extends BaseController
     /** Ajoute un résultat pour une course. */
     public function addResult(): void
     {
-        $this->requireAuth();
+        $this->requireAdmin();
         $this->requireCsrf();
 
         $courseId = (int)($_POST['course_id'] ?? 0);
@@ -156,7 +156,7 @@ class SeasonController extends BaseController
     /** Met à jour un résultat existant. */
     public function updateResult(): void
     {
-        $this->requireAuth();
+        $this->requireAdmin();
         $this->requireCsrf();
 
         $resultId = (int)($_POST['result_id'] ?? 0);
@@ -244,7 +244,7 @@ class SeasonController extends BaseController
     /** Supprime un résultat. */
     public function deleteResult(): void
     {
-        $this->requireAuth();
+        $this->requireAdmin();
         $this->requireCsrf();
 
         $resultId = (int)($_POST['result_id'] ?? 0);
@@ -387,6 +387,7 @@ class SeasonController extends BaseController
     {
         $csrfToken = \App\Security\Csrf::getToken();
         $currentUser = $_SESSION['user'] ?? null;
+        $isAdmin = isset($currentUser['role']) && $currentUser['role'] === 'admin';
         require __DIR__ . '/../Views/partials/course_results.lame.php';
         exit;
     }

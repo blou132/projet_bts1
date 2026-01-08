@@ -25,7 +25,7 @@
           <th>Pilote</th>
           <th>Ecurie</th>
           <th>Points</th>
-          <?php if (!empty($currentUser)): ?>
+          <?php if (!empty($isAdmin)): ?>
             <th data-sort="false">Actions</th>
           <?php endif; ?>
         </tr>
@@ -37,7 +37,7 @@
             <td><?= htmlspecialchars($row['prenom'] . ' ' . $row['nom']) ?></td>
             <td><?= htmlspecialchars($row['ecurie']) ?></td>
             <td><?= (int)$row['points'] ?></td>
-            <?php if (!empty($currentUser)): ?>
+            <?php if (!empty($isAdmin)): ?>
               <td class="table-actions">
                 <details>
                   <summary>Modifier</summary>
@@ -74,7 +74,7 @@
     <p class="results-empty">Resultats a confirmer pour cette manche.</p>
   <?php endif; ?>
 
-  <?php if (!empty($currentUser)): ?>
+  <?php if (!empty($isAdmin)): ?>
     <form class="result-form" method="post" action="?route=calendrier&action=addResult" data-ajax="results">
       <fieldset>
         <legend>Ajouter un resultat</legend>

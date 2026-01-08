@@ -179,9 +179,16 @@ class Database
             email VARCHAR(190) NOT NULL UNIQUE,
             password VARCHAR(255) NOT NULL,
             name VARCHAR(100) NOT NULL,
+            role VARCHAR(20) NOT NULL DEFAULT 'user',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+
+        $hasRole = $pdo->query("SHOW COLUMNS FROM users LIKE 'role'")->fetch();
+        if (!$hasRole) {
+            $pdo->exec("ALTER TABLE users ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT 'user'");
+        }
+        $pdo->exec("UPDATE users SET role = 'admin' WHERE email = 'admin@example.com' AND role = 'user'");
 
         $pdo->exec('CREATE TABLE IF NOT EXISTS bets (
             id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

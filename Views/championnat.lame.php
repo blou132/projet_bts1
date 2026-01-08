@@ -9,7 +9,7 @@
     </div>
   <?php endif; ?>
 
-  <?php if (!empty($currentUser)): ?>
+  <?php if (!empty($isAdmin)): ?>
     <form method="post" enctype="multipart/form-data" action="?route=championnats&action=store">
       <fieldset>
         <legend>Ajouter un Grand Prix</legend>
@@ -29,7 +29,7 @@
   <table>
     <thead>
       <tr>
-        <th>ID</th><th>Grand Prix</th><th>Pays hôte</th><th>Affiche</th><?php if (!empty($currentUser)): ?><th>Actions</th><?php endif; ?>
+        <th>ID</th><th>Grand Prix</th><th>Pays hôte</th><th>Affiche</th><?php if (!empty($isAdmin)): ?><th>Actions</th><?php endif; ?>
       </tr>
     </thead>
     <tbody>
@@ -43,7 +43,7 @@
               <img src="<?= htmlspecialchars($c['blason']) ?>" alt="affiche du Grand Prix" class="thumb">
             <?php endif; ?>
           </td>
-          <?php if (!empty($currentUser)): ?>
+          <?php if (!empty($isAdmin)): ?>
           <td>
             <details>
               <summary>Éditer</summary>

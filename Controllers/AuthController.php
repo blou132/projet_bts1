@@ -66,7 +66,7 @@ class AuthController extends BaseController
             return;
         }
 
-        $stmt = Database::getInstance()->prepare('SELECT id, name, email, password FROM users WHERE email = ? LIMIT 1');
+        $stmt = Database::getInstance()->prepare('SELECT id, name, email, password, role FROM users WHERE email = ? LIMIT 1');
         $stmt->execute([$email]);
         $user = $stmt->fetch();
 
@@ -84,6 +84,15 @@ class AuthController extends BaseController
 
         unset($user['password']);
         $_SESSION['user'] = $user;
+
+        $redirect = $_POST['redirect'] ?? '';
+        if (is_string($redirect)) {
+            $redirect = trim($redirect);
+            if ($redirect !== '' && str_starts_with($redirect, '?') && !str_contains($redirect, "\n") && !str_contains($redirect, "\r")) {
+                header('Location: ' . $redirect);
+                exit;
+            }
+        }
 
         $this->redirectTo('accueil');
     }
@@ -135,14 +144,24 @@ class AuthController extends BaseController
             return;
         }
 
-        $stmt = Database::getInstance()->prepare('INSERT INTO users (name, email, password) VALUES (?, ?, ?)');
-        $stmt->execute([$name, $email, password_hash($password, PASSWORD_DEFAULT)]);
+        $stmt = Database::getInstance()->prepare('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)');
+        $stmt->execute([$name, $email, password_hash($password, PASSWORD_DEFAULT), 'user']);
 
         $_SESSION['user'] = [
             'id' => (int)Database::getInstance()->lastInsertId(),
             'name' => $name,
             'email' => $email,
+            'role' => 'user',
         ];
+
+        $redirect = $_POST['redirect'] ?? '';
+        if (is_string($redirect)) {
+            $redirect = trim($redirect);
+            if ($redirect !== '' && str_starts_with($redirect, '?') && !str_contains($redirect, "\n") && !str_contains($redirect, "\r")) {
+                header('Location: ' . $redirect);
+                exit;
+            }
+        }
 
         $this->redirectTo('accueil');
     }

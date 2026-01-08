@@ -594,6 +594,39 @@ main.container {
   margin-top: 8px;
 }
 
+.bet-login {
+  border-radius: 12px;
+  background: rgba(17, 19, 31, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 420px;
+}
+
+.bet-login form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bet-login label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.bet-login input[type="email"],
+.bet-login input[type="password"] {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+}
+
 .table-tools {
   display: flex;
   flex-wrap: wrap;
