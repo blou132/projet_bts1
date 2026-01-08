@@ -16,33 +16,38 @@ class SeasonController extends BaseController
         $pdo = Database::getInstance();
         $calendar = $pdo->query('SELECT id, ordre, code, nom, pays, ville, date_course, flag FROM courses ORDER BY ordre')->fetchAll();
 
-        $selectedId = isset($_GET['course']) ? (int)$_GET['course'] : null;
-        if (($selectedId === null || $selectedId <= 0) && !empty($calendar)) {
-            $selectedId = (int)$calendar[0]['id'];
+        $this->render('calendar.lame.php', [
+            'calendar' => $calendar,
+            'year' => 2026,
+        ]);
+    }
+
+    /** Affiche une course et ses résultats sur une page dédiée. */
+    public function course(): void
+    {
+        $pdo = Database::getInstance();
+        $courseId = (int)($_GET['course'] ?? 0);
+        if ($courseId <= 0) {
+            $this->redirectTo('calendrier');
         }
 
-        $selectedCourse = null;
-        $courseResults = [];
+        $stmt = $pdo->prepare('SELECT id, ordre, code, nom, pays, ville, date_course, flag FROM courses WHERE id = ?');
+        $stmt->execute([$courseId]);
+        $course = $stmt->fetch();
 
-        if ($selectedId) {
-            foreach ($calendar as $course) {
-                if ((int)$course['id'] === $selectedId) {
-                    $selectedCourse = $course;
-                    break;
-                }
-            }
-
-            if ($selectedCourse) {
-                $stmt = $pdo->prepare('SELECT cr.id AS result_id, cr.position, cr.points, j.id AS pilote_id, j.prenom, j.nom, e.nom AS ecurie
-                                       FROM course_results cr
-                                       JOIN joueurs j ON j.id = cr.joueur_id
-                                       JOIN equipes e ON e.id = j.id_equipe
-                                       WHERE cr.course_id = ?
-                                       ORDER BY cr.position');
-                $stmt->execute([$selectedId]);
-                $courseResults = $stmt->fetchAll();
-            }
+        if (!$course) {
+            http_response_code(404);
+            exit('Course introuvable');
         }
+
+        $stmt = $pdo->prepare('SELECT cr.id AS result_id, cr.position, cr.points, j.id AS pilote_id, j.prenom, j.nom, e.nom AS ecurie
+                               FROM course_results cr
+                               JOIN joueurs j ON j.id = cr.joueur_id
+                               JOIN equipes e ON e.id = j.id_equipe
+                               WHERE cr.course_id = ?
+                               ORDER BY cr.position');
+        $stmt->execute([$courseId]);
+        $courseResults = $stmt->fetchAll();
 
         $drivers = $pdo->query('SELECT j.id, j.prenom, j.nom, e.nom AS ecurie
                                 FROM joueurs j
@@ -53,11 +58,8 @@ class SeasonController extends BaseController
         $flashSuccess = $_SESSION['calendar_flash'] ?? null;
         unset($_SESSION['calendar_errors'], $_SESSION['calendar_flash']);
 
-        $this->render('calendar.lame.php', [
-            'calendar' => $calendar,
-            'year' => 2026,
-            'selectedCourse' => $selectedCourse,
-            'selectedCourseId' => $selectedId,
+        $this->render('course.lame.php', [
+            'course' => $course,
             'courseResults' => $courseResults,
             'drivers' => $drivers,
             'calendarErrors' => $flashErrors,
@@ -111,7 +113,7 @@ class SeasonController extends BaseController
         $errors = $this->validateResult($courseId, $piloteId, $position, $points);
         if ($errors) {
             $_SESSION['calendar_errors'] = $errors;
-            $this->redirectTo('calendrier', ['course' => $courseId]);
+            $this->redirectTo('calendrier', ['action' => 'course', 'course' => $courseId]);
         }
 
         Database::query(
@@ -119,7 +121,7 @@ class SeasonController extends BaseController
             [$courseId, $piloteId, $position, $points]
         );
         $_SESSION['calendar_flash'] = 'Résultat ajouté.';
-        $this->redirectTo('calendrier', ['course' => $courseId]);
+        $this->redirectTo('calendrier', ['action' => 'course', 'course' => $courseId]);
     }
 
     /** Met à jour un résultat existant. */
@@ -136,20 +138,20 @@ class SeasonController extends BaseController
 
         if ($resultId <= 0) {
             $_SESSION['calendar_errors'] = ['Résultat introuvable.'];
-            $this->redirectTo('calendrier', ['course' => $courseId]);
+            $this->redirectTo('calendrier', ['action' => 'course', 'course' => $courseId]);
         }
 
         $exists = Database::query('SELECT course_id FROM course_results WHERE id = ?', [$resultId])->fetchColumn();
         if (!$exists) {
             $_SESSION['calendar_errors'] = ['Résultat introuvable.'];
-            $this->redirectTo('calendrier', ['course' => $courseId]);
+            $this->redirectTo('calendrier', ['action' => 'course', 'course' => $courseId]);
         }
         $courseId = (int)$exists;
 
         $errors = $this->validateResult($courseId, $piloteId, $position, $points, $resultId);
         if ($errors) {
             $_SESSION['calendar_errors'] = $errors;
-            $this->redirectTo('calendrier', ['course' => $courseId]);
+            $this->redirectTo('calendrier', ['action' => 'course', 'course' => $courseId]);
         }
 
         Database::query(
@@ -157,7 +159,7 @@ class SeasonController extends BaseController
             [$piloteId, $position, $points, $resultId]
         );
         $_SESSION['calendar_flash'] = 'Résultat mis à jour.';
-        $this->redirectTo('calendrier', ['course' => $courseId]);
+        $this->redirectTo('calendrier', ['action' => 'course', 'course' => $courseId]);
     }
 
     /** Supprime un résultat. */
@@ -180,7 +182,7 @@ class SeasonController extends BaseController
 
         Database::query('DELETE FROM course_results WHERE id = ?', [$resultId]);
         $_SESSION['calendar_flash'] = 'Résultat supprimé.';
-        $this->redirectTo('calendrier', ['course' => (int)$row['course_id']]);
+        $this->redirectTo('calendrier', ['action' => 'course', 'course' => (int)$row['course_id']]);
     }
 
     /**

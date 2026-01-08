@@ -41,7 +41,7 @@ $publicRoutes = [
     'pilotes' => ['index'],
     'joueurs' => ['index'],
     'jointure' => ['index', 'withEquipes'],
-    'calendrier' => ['index', 'calendar'],
+    'calendrier' => ['index', 'calendar', 'course'],
     'classements' => ['index', 'standings'],
 ];
 $authRoutes = ['login', 'authenticate'];
@@ -107,7 +107,9 @@ switch ($route) {
 
     case 'calendrier':
         $controller = new SeasonController();
-        $action = 'calendar';
+        if ($action === 'index') {
+            $action = 'calendar';
+        }
         break;
 
     case 'classements':
