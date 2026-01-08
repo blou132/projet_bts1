@@ -24,6 +24,7 @@ $web = new Web();
     </div>
     <?php else: ?>
     <a class="btn login-link" href="?route=auth&action=login">Se connecter</a>
+    <a class="btn" href="?route=auth&action=register">Creer un compte</a>
     <?php endif; ?>
     <a class="f1-logo" href="https://www.formula1.com" target="_blank" rel="noopener">
       <img src="Public/assets/f1-logo.svg" alt="F1 logo">

@@ -1,7 +1,7 @@
 <section class="auth-wrapper">
   <div class="auth-card">
-    <h2>Connexion</h2>
-    <p class="auth-subtitle">Identifiez-vous pour accéder au paddock.</p>
+    <h2>Creer un compte</h2>
+    <p class="auth-subtitle">Inscrivez-vous pour acceder au paddock.</p>
 
     <?php if (!empty($flashError)): ?>
       <div class="alert">
@@ -17,8 +17,12 @@
       </div>
     <?php endif; ?>
 
-    <form method="post" action="?route=auth&action=authenticate">
+    <form method="post" action="?route=auth&action=store">
       <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
+      <label>
+        Nom
+        <input type="text" name="name" value="<?= htmlspecialchars($old['name'] ?? '') ?>" required>
+      </label>
       <label>
         Adresse e-mail
         <input type="email" name="email" value="<?= htmlspecialchars($old['email'] ?? '') ?>" required>
@@ -27,9 +31,13 @@
         Mot de passe
         <input type="password" name="password" required>
       </label>
-      <button type="submit" class="btn">Se connecter</button>
+      <label>
+        Confirmation du mot de passe
+        <input type="password" name="password_confirm" required>
+      </label>
+      <button type="submit" class="btn">Creer mon compte</button>
     </form>
 
-    <p class="auth-subtitle">Pas encore de compte ? <a href="?route=auth&action=register">Creer un compte</a></p>
+    <p class="auth-subtitle">Deja inscrit ? <a href="?route=auth&action=login">Se connecter</a></p>
   </div>
 </section>

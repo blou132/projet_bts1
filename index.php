@@ -44,7 +44,7 @@ $publicRoutes = [
     'calendrier' => ['index', 'calendar', 'course'],
     'classements' => ['index', 'standings'],
 ];
-$authRoutes = ['login', 'authenticate'];
+$authRoutes = ['login', 'authenticate', 'register', 'store'];
 
 if (!$isAuthenticated) {
     $routeAllowed = isset($publicRoutes[$route]) && in_array($action, $publicRoutes[$route], true);
