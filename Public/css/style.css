@@ -627,6 +627,36 @@ main.container {
   color: #fff;
 }
 
+.bet-rank .results-table td.bet-score {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.bet-picks {
+  display: grid;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.bet-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  background: rgba(225, 6, 0, 0.2);
+  border: 1px solid rgba(225, 6, 0, 0.5);
+  color: #ffb3b3;
+}
+
+.results-table tbody tr.is-user,
+.points-table tbody tr.is-user {
+  background: rgba(225, 6, 0, 0.14);
+}
+
 .table-tools {
   display: flex;
   flex-wrap: wrap;

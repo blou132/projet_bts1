@@ -57,6 +57,21 @@
       </div>
     <?php endif; ?>
 
+    <?php if (!empty($userBet)): ?>
+      <?php if (!empty($userBetScore)): ?>
+        <div class="bet-summary">
+          <strong>Votre score sur cette course</strong>
+          <p>
+            <?= (int)$userBetScore['total'] ?> points
+            (<?= (int)$userBetScore['exact'] ?> exact<?= (int)$userBetScore['exact'] > 1 ? 's' : '' ?>,
+            <?= (int)$userBetScore['partial'] ?> sur podium<?= !empty($userBetScore['perfect']) ? ', bonus parfait' : '' ?>).
+          </p>
+        </div>
+      <?php elseif (empty($betPodium)): ?>
+        <p class="results-empty">Score disponible apres la saisie du podium officiel.</p>
+      <?php endif; ?>
+    <?php endif; ?>
+
     <?php if ($betWindow['isOpen']): ?>
       <form class="result-form bet-form" method="post" action="?route=calendrier&action=placeBet">
         <fieldset>

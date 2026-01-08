@@ -43,6 +43,7 @@ $publicRoutes = [
     'jointure' => ['index', 'withEquipes'],
     'calendrier' => ['index', 'calendar', 'course'],
     'classements' => ['index', 'standings'],
+    'paris' => ['index', 'bets'],
 ];
 $authRoutes = ['login', 'authenticate', 'register', 'store'];
 
@@ -115,6 +116,13 @@ switch ($route) {
     case 'classements':
         $controller = new SeasonController();
         $action = 'standings';
+        break;
+
+    case 'paris':
+        $controller = new SeasonController();
+        if ($action === 'index') {
+            $action = 'bets';
+        }
         break;
 
     case 'auth':

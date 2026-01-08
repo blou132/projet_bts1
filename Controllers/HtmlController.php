@@ -18,6 +18,7 @@ class HtmlController
             'Pilotes par écurie' => '?route=jointure',
             'Calendrier 2026' => '?route=calendrier',
             'Classement' => '?route=classements',
+            'Paris' => '?route=paris',
         ];
         $html = '<nav class="main-nav"><ul class="nav-list">';
         foreach ($items as $label => $href) {

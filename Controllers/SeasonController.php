@@ -46,6 +46,34 @@ class SeasonController extends BaseController
         $currentUser = $this->currentUser();
         $userBet = $currentUser ? $this->fetchUserBet($courseId, (int)$currentUser['id']) : null;
         $betWindow = $this->getBetWindow($course);
+        $betPodium = $this->fetchPodium($courseId);
+        $courseBets = $this->fetchCourseBets($courseId);
+        $betLeaderboard = [];
+        $userBetScore = null;
+        if ($betPodium) {
+            foreach ($courseBets as $bet) {
+                $score = $this->computeBetScore($bet, $betPodium);
+                $bet['score'] = $score['total'];
+                $bet['score_detail'] = $score;
+                $betLeaderboard[] = $bet;
+                if ($currentUser && (int)$bet['user_id'] === (int)$currentUser['id']) {
+                    $userBetScore = $score;
+                }
+            }
+            usort($betLeaderboard, static function (array $a, array $b): int {
+                $scoreCmp = ($b['score'] ?? 0) <=> ($a['score'] ?? 0);
+                if ($scoreCmp !== 0) {
+                    return $scoreCmp;
+                }
+                $nameA = strtolower((string)($a['name'] ?? $a['email'] ?? ''));
+                $nameB = strtolower((string)($b['name'] ?? $b['email'] ?? ''));
+                return $nameA <=> $nameB;
+            });
+        }
+        $betStats = [
+            'total' => count($courseBets),
+            'scored' => $betPodium ? count($betLeaderboard) : 0,
+        ];
 
         $flashErrors = $_SESSION['calendar_errors'] ?? [];
         $flashSuccess = $_SESSION['calendar_flash'] ?? null;
@@ -68,6 +96,10 @@ class SeasonController extends BaseController
             'driversById' => $driversById,
             'betErrors' => $betErrors,
             'betFlash' => $betFlash,
+            'betPodium' => $betPodium,
+            'betLeaderboard' => $betLeaderboard,
+            'betStats' => $betStats,
+            'userBetScore' => $userBetScore,
         ]);
     }
 
@@ -100,6 +132,72 @@ class SeasonController extends BaseController
             'courses' => $courses,
             'drivers' => $drivers,
             'pointsByDriver' => $pointsByDriver,
+        ]);
+    }
+
+    /** Affiche le classement general des paris. */
+    public function bets(): void
+    {
+        $pdo = Database::getInstance();
+        $users = $pdo->query('SELECT id, name, email FROM users ORDER BY name')->fetchAll();
+        $bets = $pdo->query('SELECT user_id, course_id, first_joueur_id, second_joueur_id, third_joueur_id FROM bets')->fetchAll();
+        $podiums = $this->fetchAllPodiums();
+
+        $leaderboard = [];
+        foreach ($users as $user) {
+            $userId = (int)$user['id'];
+            $leaderboard[$userId] = [
+                'user_id' => $userId,
+                'name' => $user['name'] ?? '',
+                'email' => $user['email'] ?? '',
+                'points' => 0,
+                'perfect' => 0,
+                'exact' => 0,
+                'partial' => 0,
+                'bets' => 0,
+            ];
+        }
+
+        foreach ($bets as $bet) {
+            $courseId = (int)$bet['course_id'];
+            if (!isset($podiums[$courseId])) {
+                continue;
+            }
+            $userId = (int)$bet['user_id'];
+            if (!isset($leaderboard[$userId])) {
+                continue;
+            }
+            $score = $this->computeBetScore($bet, $podiums[$courseId]);
+            $leaderboard[$userId]['points'] += $score['total'];
+            $leaderboard[$userId]['perfect'] += $score['perfect'] ? 1 : 0;
+            $leaderboard[$userId]['exact'] += $score['exact'];
+            $leaderboard[$userId]['partial'] += $score['partial'];
+            $leaderboard[$userId]['bets'] += 1;
+        }
+
+        $entries = array_values(array_filter($leaderboard, static fn(array $row): bool => $row['bets'] > 0));
+        usort($entries, static function (array $a, array $b): int {
+            $pointsCmp = $b['points'] <=> $a['points'];
+            if ($pointsCmp !== 0) {
+                return $pointsCmp;
+            }
+            $perfectCmp = $b['perfect'] <=> $a['perfect'];
+            if ($perfectCmp !== 0) {
+                return $perfectCmp;
+            }
+            $exactCmp = $b['exact'] <=> $a['exact'];
+            if ($exactCmp !== 0) {
+                return $exactCmp;
+            }
+            $nameA = strtolower((string)($a['name'] ?? $a['email'] ?? ''));
+            $nameB = strtolower((string)($b['name'] ?? $b['email'] ?? ''));
+            return $nameA <=> $nameB;
+        });
+
+        $this->render('bets.lame.php', [
+            'leaderboard' => $entries,
+            'coursesScored' => count($podiums),
+            'betsTotal' => count($bets),
         ]);
     }
 
@@ -400,6 +498,112 @@ class SeasonController extends BaseController
         $stmt->execute([$courseId, $userId]);
         $bet = $stmt->fetch();
         return $bet ?: null;
+    }
+
+    private function fetchCourseBets(int $courseId): array
+    {
+        $stmt = Database::getInstance()->prepare('SELECT b.user_id, b.course_id, b.first_joueur_id, b.second_joueur_id, b.third_joueur_id,
+                                                         u.name, u.email
+                                                  FROM bets b
+                                                  JOIN users u ON u.id = b.user_id
+                                                  WHERE b.course_id = ?
+                                                  ORDER BY u.name, u.email');
+        $stmt->execute([$courseId]);
+        return $stmt->fetchAll();
+    }
+
+    private function fetchPodium(int $courseId): ?array
+    {
+        $stmt = Database::getInstance()->prepare('SELECT position, joueur_id
+                                                  FROM course_results
+                                                  WHERE course_id = ? AND position IN (1, 2, 3)');
+        $stmt->execute([$courseId]);
+        $rows = $stmt->fetchAll();
+        if (!$rows) {
+            return null;
+        }
+        $podium = [];
+        foreach ($rows as $row) {
+            $pos = (int)$row['position'];
+            if ($pos < 1 || $pos > 3 || isset($podium[$pos])) {
+                continue;
+            }
+            $podium[$pos] = (int)$row['joueur_id'];
+        }
+        if (count($podium) !== 3) {
+            return null;
+        }
+        ksort($podium);
+        return $podium;
+    }
+
+    private function fetchAllPodiums(): array
+    {
+        $rows = Database::getInstance()->query('SELECT course_id, position, joueur_id
+                                                FROM course_results
+                                                WHERE position IN (1, 2, 3)
+                                                ORDER BY course_id')->fetchAll();
+        $podiums = [];
+        foreach ($rows as $row) {
+            $courseId = (int)$row['course_id'];
+            $pos = (int)$row['position'];
+            if ($pos < 1 || $pos > 3) {
+                continue;
+            }
+            if (!isset($podiums[$courseId])) {
+                $podiums[$courseId] = [];
+            }
+            if (!isset($podiums[$courseId][$pos])) {
+                $podiums[$courseId][$pos] = (int)$row['joueur_id'];
+            }
+        }
+        foreach ($podiums as $courseId => $podium) {
+            if (count($podium) !== 3) {
+                unset($podiums[$courseId]);
+                continue;
+            }
+            ksort($podium);
+            $podiums[$courseId] = $podium;
+        }
+        return $podiums;
+    }
+
+    private function computeBetScore(array $bet, array $podium): array
+    {
+        $predicted = [
+            1 => (int)($bet['first_joueur_id'] ?? 0),
+            2 => (int)($bet['second_joueur_id'] ?? 0),
+            3 => (int)($bet['third_joueur_id'] ?? 0),
+        ];
+        $actual = [
+            1 => (int)($podium[1] ?? 0),
+            2 => (int)($podium[2] ?? 0),
+            3 => (int)($podium[3] ?? 0),
+        ];
+        $actualValues = array_values($actual);
+
+        $exact = 0;
+        $partial = 0;
+        foreach ($predicted as $position => $driverId) {
+            if ($driverId > 0 && $driverId === $actual[$position]) {
+                $exact++;
+            } elseif ($driverId > 0 && in_array($driverId, $actualValues, true)) {
+                $partial++;
+            }
+        }
+
+        $total = ($exact * 3) + $partial;
+        $perfect = ($exact === 3);
+        if ($perfect) {
+            $total += 2;
+        }
+
+        return [
+            'total' => $total,
+            'exact' => $exact,
+            'partial' => $partial,
+            'perfect' => $perfect,
+        ];
     }
 
     private function getBetWindow(array $course): array
