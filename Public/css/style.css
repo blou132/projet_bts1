@@ -569,6 +569,31 @@ main.container {
   min-height: 36px;
 }
 
+.bet-panel {
+  margin-top: 24px;
+}
+
+.bet-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 12px;
+}
+
+.bet-summary {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 16px;
+}
+
+.bet-summary ol {
+  padding-left: 18px;
+  margin-top: 8px;
+}
+
 .table-tools {
   display: flex;
   flex-wrap: wrap;

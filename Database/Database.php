@@ -182,6 +182,33 @@ class Database
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+
+        $pdo->exec('CREATE TABLE IF NOT EXISTS bets (
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            user_id INT UNSIGNED NOT NULL,
+            course_id INT UNSIGNED NOT NULL,
+            first_joueur_id INT UNSIGNED NOT NULL,
+            second_joueur_id INT UNSIGNED NOT NULL,
+            third_joueur_id INT UNSIGNED NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+            UNIQUE KEY bets_unique (user_id, course_id),
+            CONSTRAINT fk_bets_user FOREIGN KEY (user_id)
+                REFERENCES users(id)
+                ON DELETE CASCADE,
+            CONSTRAINT fk_bets_course FOREIGN KEY (course_id)
+                REFERENCES courses(id)
+                ON DELETE CASCADE,
+            CONSTRAINT fk_bets_first FOREIGN KEY (first_joueur_id)
+                REFERENCES joueurs(id)
+                ON DELETE CASCADE,
+            CONSTRAINT fk_bets_second FOREIGN KEY (second_joueur_id)
+                REFERENCES joueurs(id)
+                ON DELETE CASCADE,
+            CONSTRAINT fk_bets_third FOREIGN KEY (third_joueur_id)
+                REFERENCES joueurs(id)
+                ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
     }
 
     /** Danger ! Supprime tout. */
@@ -189,6 +216,7 @@ class Database
     {
         $pdo = self::getInstance();
         $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
+        $pdo->exec('DROP TABLE IF EXISTS bets');
         $pdo->exec('DROP TABLE IF EXISTS course_results');
         $pdo->exec('DROP TABLE IF EXISTS courses');
         $pdo->exec('DROP TABLE IF EXISTS joueurs');

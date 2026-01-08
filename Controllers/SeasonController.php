@@ -39,10 +39,19 @@ class SeasonController extends BaseController
 
         $courseResults = $this->fetchCourseResults($courseId);
         $drivers = $this->fetchDrivers();
+        $driversById = [];
+        foreach ($drivers as $driver) {
+            $driversById[(int)$driver['id']] = $driver;
+        }
+        $currentUser = $this->currentUser();
+        $userBet = $currentUser ? $this->fetchUserBet($courseId, (int)$currentUser['id']) : null;
+        $betWindow = $this->getBetWindow($course);
 
         $flashErrors = $_SESSION['calendar_errors'] ?? [];
         $flashSuccess = $_SESSION['calendar_flash'] ?? null;
-        unset($_SESSION['calendar_errors'], $_SESSION['calendar_flash']);
+        $betErrors = $_SESSION['bet_errors'] ?? [];
+        $betFlash = $_SESSION['bet_flash'] ?? null;
+        unset($_SESSION['calendar_errors'], $_SESSION['calendar_flash'], $_SESSION['bet_errors'], $_SESSION['bet_flash']);
 
         if (($_GET['partial'] ?? '') === 'results') {
             $this->sendCourseResultsPartial($course, $courseResults, $drivers, $flashErrors, $flashSuccess);
@@ -54,6 +63,11 @@ class SeasonController extends BaseController
             'drivers' => $drivers,
             'calendarErrors' => $flashErrors,
             'calendarFlash' => $flashSuccess,
+            'betWindow' => $betWindow,
+            'userBet' => $userBet,
+            'driversById' => $driversById,
+            'betErrors' => $betErrors,
+            'betFlash' => $betFlash,
         ]);
     }
 
@@ -273,6 +287,68 @@ class SeasonController extends BaseController
         $this->redirectTo('calendrier', ['action' => 'course', 'course' => (int)$row['course_id']]);
     }
 
+    /** Enregistre un pari (podium) pour une course. */
+    public function placeBet(): void
+    {
+        $this->requireAuth();
+        $this->requireCsrf();
+
+        $courseId = (int)($_POST['course_id'] ?? 0);
+        $first = (int)($_POST['first_pilote_id'] ?? 0);
+        $second = (int)($_POST['second_pilote_id'] ?? 0);
+        $third = (int)($_POST['third_pilote_id'] ?? 0);
+
+        $errors = [];
+        $course = $courseId > 0 ? $this->fetchCourse($courseId) : null;
+        if (!$course) {
+            $errors[] = 'Course introuvable.';
+        }
+
+        if (!$errors) {
+            $betWindow = $this->getBetWindow($course);
+            if (!$betWindow['isOpen']) {
+                $errors[] = $betWindow['reason'] ?? 'Les paris sont fermes.';
+            }
+        }
+
+        if ($first <= 0 || $second <= 0 || $third <= 0) {
+            $errors[] = 'Veuillez selectionner le podium complet.';
+        }
+
+        if (count(array_unique([$first, $second, $third])) < 3) {
+            $errors[] = 'Les pilotes doivent etre differents.';
+        }
+
+        if (!$errors) {
+            $stmt = Database::getInstance()->prepare('SELECT COUNT(*) FROM joueurs WHERE id IN (?, ?, ?)');
+            $stmt->execute([$first, $second, $third]);
+            if ((int)$stmt->fetchColumn() !== 3) {
+                $errors[] = 'Pilote invalide.';
+            }
+        }
+
+        if ($errors) {
+            $_SESSION['bet_errors'] = $errors;
+            $this->redirectTo('calendrier', ['action' => 'course', 'course' => $courseId]);
+        }
+
+        $user = $this->currentUser();
+        $userId = (int)$user['id'];
+
+        Database::query(
+            'INSERT INTO bets (user_id, course_id, first_joueur_id, second_joueur_id, third_joueur_id)
+             VALUES (?, ?, ?, ?, ?)
+             ON DUPLICATE KEY UPDATE
+               first_joueur_id = VALUES(first_joueur_id),
+               second_joueur_id = VALUES(second_joueur_id),
+               third_joueur_id = VALUES(third_joueur_id)',
+            [$userId, $courseId, $first, $second, $third]
+        );
+
+        $_SESSION['bet_flash'] = 'Pari enregistre.';
+        $this->redirectTo('calendrier', ['action' => 'course', 'course' => $courseId]);
+    }
+
     private function isAjaxRequest(): bool
     {
         $requestedWith = $_SERVER['HTTP_X_REQUESTED_WITH'] ?? '';
@@ -313,6 +389,50 @@ class SeasonController extends BaseController
         $currentUser = $_SESSION['user'] ?? null;
         require __DIR__ . '/../Views/partials/course_results.lame.php';
         exit;
+    }
+
+    private function fetchUserBet(int $courseId, int $userId): ?array
+    {
+        $stmt = Database::getInstance()->prepare('SELECT id, first_joueur_id, second_joueur_id, third_joueur_id
+                                                  FROM bets
+                                                  WHERE course_id = ? AND user_id = ?');
+        $stmt->execute([$courseId, $userId]);
+        $bet = $stmt->fetch();
+        return $bet ?: null;
+    }
+
+    private function getBetWindow(array $course): array
+    {
+        $now = new \DateTime('now');
+        $courseDate = new \DateTime($course['date_course']);
+        $closeAt = (clone $courseDate)->modify('-1 day')->setTime(23, 59, 59);
+
+        $stmt = Database::getInstance()->prepare('SELECT date_course FROM courses WHERE ordre < ? ORDER BY ordre DESC LIMIT 1');
+        $stmt->execute([(int)$course['ordre']]);
+        $prevDate = $stmt->fetchColumn();
+        $openAt = null;
+        if (is_string($prevDate) && $prevDate !== '') {
+            $openAt = (new \DateTime($prevDate))->setTime(23, 59, 59);
+        }
+
+        $isOpen = ($openAt === null || $now > $openAt) && $now <= $closeAt;
+        $reason = null;
+        if (!$isOpen) {
+            if ($openAt !== null && $now <= $openAt) {
+                $reason = 'Les paris ouvrent apres la fin de la course precedente.';
+            } elseif ($now > $closeAt) {
+                $reason = 'Les paris sont clotures (J-1).';
+            } else {
+                $reason = 'Les paris sont fermes.';
+            }
+        }
+
+        return [
+            'isOpen' => $isOpen,
+            'openAt' => $openAt,
+            'closeAt' => $closeAt,
+            'reason' => $reason,
+        ];
     }
 
     /**

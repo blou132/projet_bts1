@@ -6,4 +6,5 @@
   </header>
 
   <?php require __DIR__ . '/partials/course_results.lame.php'; ?>
+  <?php require __DIR__ . '/partials/course_bet.lame.php'; ?>
 </section>
