@@ -331,6 +331,86 @@
     bindForms();
   };
 
+  const initLoginModal = () => {
+    const modal = $('#login-modal');
+    if (!modal) {
+      return;
+    }
+
+    const redirectInput = $('.js-modal-redirect', modal);
+    const registerLink = $('.js-modal-register', modal);
+    const focusTarget = $('input[name="email"]', modal);
+
+    const getDefaultRedirect = () => {
+      const search = window.location.search || '';
+      const hash = window.location.hash || '';
+      if (search) {
+        return `${search}${hash}`;
+      }
+      return '?route=accueil';
+    };
+
+    const sanitizeRedirect = (value) => {
+      const raw = (value || '').trim();
+      if (!raw || !raw.startsWith('?') || /[\r\n]/.test(raw)) {
+        return getDefaultRedirect();
+      }
+      return raw;
+    };
+
+    const setRedirect = (value) => {
+      const redirect = sanitizeRedirect(value);
+      if (redirectInput) {
+        redirectInput.value = redirect;
+      }
+      if (registerLink) {
+        registerLink.setAttribute(
+          'href',
+          `?route=auth&action=register&redirect=${encodeURIComponent(redirect)}`
+        );
+      }
+    };
+
+    const openModal = (redirectValue) => {
+      setRedirect(redirectValue || getDefaultRedirect());
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+      if (focusTarget) {
+        setTimeout(() => focusTarget.focus(), 0);
+      }
+    };
+
+    const closeModal = () => {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+    };
+
+    $$('[data-open-modal="login"]').forEach((trigger) => {
+      trigger.addEventListener('click', (event) => {
+        if (event.defaultPrevented) {
+          return;
+        }
+        event.preventDefault();
+        openModal(trigger.dataset.redirect || '');
+      });
+    });
+
+    modal.querySelectorAll('[data-close-modal]').forEach((btn) => {
+      btn.addEventListener('click', (event) => {
+        event.preventDefault();
+        closeModal();
+      });
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+        closeModal();
+      }
+    });
+  };
+
   document.addEventListener('DOMContentLoaded', () => {
     setPageLoaded();
     initReveal();
@@ -339,5 +419,6 @@
     initSortableTables();
     initCalendarExtras();
     initCourseAjax();
+    initLoginModal();
   });
 })();

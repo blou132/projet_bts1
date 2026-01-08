@@ -5,22 +5,11 @@
   </header>
 
   <?php if (empty($currentUser)): ?>
+    <?php $betRedirect = '?route=calendrier&action=course&course=' . (int)$course['id'] . '#bet'; ?>
     <div class="bet-login" id="bet">
       <p class="auth-subtitle">Connectez-vous pour parier.</p>
-      <form method="post" action="?route=auth&action=authenticate">
-        <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
-        <input type="hidden" name="redirect" value="<?= htmlspecialchars('?route=calendrier&action=course&course=' . (int)$course['id'] . '#bet') ?>">
-        <label>
-          Adresse e-mail
-          <input type="email" name="email" required>
-        </label>
-        <label>
-          Mot de passe
-          <input type="password" name="password" required>
-        </label>
-        <button type="submit" class="btn">Se connecter</button>
-      </form>
-      <p class="auth-subtitle">Pas encore de compte ? <a href="?route=auth&action=register&redirect=<?= htmlspecialchars('?route=calendrier&action=course&course=' . (int)$course['id'] . '#bet') ?>">Creer un compte</a></p>
+      <a class="btn login-link" href="?route=auth&action=login&redirect=<?= htmlspecialchars(rawurlencode($betRedirect)) ?>" data-open-modal="login" data-redirect="<?= htmlspecialchars($betRedirect) ?>">Se connecter</a>
+      <p class="auth-subtitle">Pas encore de compte ? <a href="?route=auth&action=register&redirect=<?= htmlspecialchars(rawurlencode($betRedirect)) ?>">Creer un compte</a></p>
     </div>
   <?php else: ?>
     <?php if (!empty($betErrors)): ?>

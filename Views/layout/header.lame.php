@@ -1,6 +1,13 @@
 <?php
 use App\Routes\Web;
+use App\Security\Csrf;
+
 $web = new Web();
+$currentUser = $currentUser ?? ($_SESSION['user'] ?? null);
+$isAdmin = $isAdmin ?? (!empty($currentUser['role']) && $currentUser['role'] === 'admin');
+if (!isset($csrfToken)) {
+  $csrfToken = Csrf::getToken();
+}
 ?><!doctype html>
 <html lang="fr">
 <head>
@@ -23,8 +30,7 @@ $web = new Web();
       <a class="user-logout" href="?route=auth&action=logout">Déconnexion</a>
     </div>
     <?php else: ?>
-    <a class="btn login-link" href="?route=auth&action=login">Se connecter</a>
-    <a class="btn" href="?route=auth&action=register">Creer un compte</a>
+    <a class="btn login-link" href="?route=auth&action=login" data-open-modal="login">Se connecter</a>
     <?php endif; ?>
     <a class="f1-logo" href="https://www.formula1.com" target="_blank" rel="noopener">
       <img src="Public/assets/f1-logo.svg" alt="F1 logo">
