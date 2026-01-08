@@ -15,6 +15,36 @@ body {
   flex-direction: column;
 }
 
+body.page-loaded .site-header {
+  animation: dropIn 0.6s ease both;
+}
+
+body.page-loaded main.container {
+  animation: riseIn 0.7s ease 0.1s both;
+}
+
+@keyframes dropIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ===== HEADER ===== */
 header.site-header {
   background: linear-gradient(120deg, #e10600, #6c0a21);
@@ -347,6 +377,40 @@ main.container {
   gap: 18px;
 }
 
+.calendar-highlight {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.next-race {
+  background: rgba(225, 6, 0, 0.12);
+  border: 1px solid rgba(225, 6, 0, 0.4);
+  border-radius: 16px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+}
+
+.next-race-label {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.next-race-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.next-race-meta,
+.next-countdown {
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .calendar-card {
   background: rgba(17, 19, 31, 0.72);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -397,6 +461,11 @@ main.container {
 .calendar-card.is-active {
   border-color: #e10600;
   box-shadow: 0 18px 40px rgba(225, 6, 0, 0.35);
+}
+
+.calendar-card.is-next {
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 18px 40px rgba(255, 255, 255, 0.15);
 }
 
 .results-panel {
@@ -498,6 +567,33 @@ main.container {
 .result-form select,
 .result-form input[type="number"] {
   min-height: 36px;
+}
+
+.table-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin: 12px 0 16px;
+}
+
+.filter-input {
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.25);
+  color: #f1f1f1;
+  min-width: 240px;
+}
+
+.filter-count {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.sort-hint {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .alert.success {
@@ -707,8 +803,52 @@ table th {
   color: #f9f9f9;
 }
 
+table th.sortable {
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+}
+
+table th.sortable::after {
+  content: ' ^';
+  opacity: 0.25;
+}
+
+table th.sortable.is-desc::after {
+  content: ' v';
+  opacity: 0.65;
+}
+
+table th.sortable.is-asc::after {
+  content: ' ^';
+  opacity: 0.8;
+}
+
 table tr:nth-child(even) {
   background: rgba(255, 255, 255, 0.02);
+}
+
+/* ===== REVEALS ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  body.page-loaded .site-header,
+  body.page-loaded main.container {
+    animation: none;
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
 }
 
 /* ===== IMAGES ===== */
@@ -860,6 +1000,15 @@ details summary {
   form select {
     width: 100%;
     max-width: 100%;
+  }
+
+  .table-tools {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-input {
+    width: 100%;
   }
 
   table {

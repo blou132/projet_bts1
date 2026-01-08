@@ -31,8 +31,14 @@
     </form>
   <?php endif; ?>
 
-  <table>
-    <thead><tr><th>ID</th><th>Écurie</th><th>Pays</th><th>Grand Prix</th><th>Logo</th><?php if (!empty($currentUser)): ?><th>Actions</th><?php endif; ?></tr></thead>
+  <div class="table-tools">
+    <input class="filter-input" type="search" placeholder="Rechercher une ecurie..." data-filter-table="ecuries-table" data-filter-count="ecuries-count">
+    <span class="filter-count" id="ecuries-count"></span>
+    <span class="sort-hint">Cliquer sur un titre pour trier</span>
+  </div>
+
+  <table id="ecuries-table" data-sortable="true">
+    <thead><tr><th>ID</th><th>Écurie</th><th>Pays</th><th>Grand Prix</th><th data-sort="false">Logo</th><?php if (!empty($currentUser)): ?><th data-sort="false">Actions</th><?php endif; ?></tr></thead>
     <tbody>
     <?php foreach ($ecuries as $ecurie): ?>
       <tr>

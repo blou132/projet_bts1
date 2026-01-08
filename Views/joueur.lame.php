@@ -32,8 +32,14 @@
     </form>
   <?php endif; ?>
 
-  <table>
-    <thead><tr><th>ID</th><th>Nom</th><th>Prénom</th><th>Rôle</th><th>Écurie</th><th>Portrait</th><?php if (!empty($currentUser)): ?><th>Actions</th><?php endif; ?></tr></thead>
+  <div class="table-tools">
+    <input class="filter-input" type="search" placeholder="Rechercher un pilote..." data-filter-table="pilotes-table" data-filter-count="pilotes-count">
+    <span class="filter-count" id="pilotes-count"></span>
+    <span class="sort-hint">Cliquer sur un titre pour trier</span>
+  </div>
+
+  <table id="pilotes-table" data-sortable="true">
+    <thead><tr><th>ID</th><th>Nom</th><th>Prénom</th><th>Rôle</th><th>Écurie</th><th data-sort="false">Portrait</th><?php if (!empty($currentUser)): ?><th data-sort="false">Actions</th><?php endif; ?></tr></thead>
     <tbody>
     <?php foreach ($pilotes as $pilote): ?>
       <tr>

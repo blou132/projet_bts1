@@ -1,7 +1,12 @@
 <section>
   <h2>Pilotes par écurie</h2>
-  <table>
-    <thead><tr><th>Écurie</th><th>Logo</th><th>Pilote</th><th>Rôle</th><th>Portrait</th></tr></thead>
+  <div class="table-tools">
+    <input class="filter-input" type="search" placeholder="Rechercher..." data-filter-table="pilotes-ecurie-table" data-filter-count="pilotes-ecurie-count">
+    <span class="filter-count" id="pilotes-ecurie-count"></span>
+    <span class="sort-hint">Cliquer sur un titre pour trier</span>
+  </div>
+  <table id="pilotes-ecurie-table" data-sortable="true">
+    <thead><tr><th>Écurie</th><th data-sort="false">Logo</th><th>Pilote</th><th>Rôle</th><th data-sort="false">Portrait</th></tr></thead>
     <tbody>
       <?php foreach ($rows as $r): ?>
         <tr>
