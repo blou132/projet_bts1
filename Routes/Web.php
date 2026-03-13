@@ -6,10 +6,17 @@ namespace App\Routes;
 use App\Controllers\HtmlController;
 
 /**
- * Routeur minimal pour exposer des fragments HTML.
+ * Class Web
+ *
+ * Routeur minimal expose pour afficher des fragments HTML.
  */
 class Web
 {
+    /**
+     * Affiche le menu principal du site.
+     *
+     * @return void
+     */
     public function menu(): void
     {
         $html = (new HtmlController())->menu();

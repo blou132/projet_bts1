@@ -21,6 +21,15 @@ Différence importante :
 - `Classement des paris` sur `/calendrier/course/ID` = classement de la course en cours.
 - `Classement des paris` sur `/paris` = classement cumulé saison.
 
+## Trace GitHub
+
+Depot utilise pendant le developpement :
+- `https://github.com/blou132/projet_bts1_casser.git`
+
+Note pour l'examinateur :
+- ce depot n'est plus utilisable en push actuellement ;
+- il conserve toutefois l'historique des commits / pushes deja realises pendant le projet.
+
 ## Prérequis
 
 - PHP 8.1+

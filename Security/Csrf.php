@@ -4,12 +4,23 @@ declare(strict_types=1);
 namespace App\Security;
 
 /**
- * Service statique chargé de générer et vérifier les jetons CSRF.
+ * Class Csrf
+ *
+ * Service statique charge de generer et verifier les jetons CSRF.
  */
 class Csrf
 {
+    /**
+     * @var string Cle de session utilisee pour stocker le jeton.
+     */
     private const SESSION_KEY = '_csrf_token';
 
+    /**
+     * Retourne le jeton CSRF courant de la session.
+     *
+     * @throws \RuntimeException Si la session PHP n'est pas demarree.
+     * @return string
+     */
     public static function getToken(): string
     {
         if (session_status() !== PHP_SESSION_ACTIVE) {
@@ -25,6 +36,12 @@ class Csrf
         return $token;
     }
 
+    /**
+     * Verifie si un jeton fourni correspond au jeton stocke en session.
+     *
+     * @param string|null $token Jeton recu depuis le formulaire.
+     * @return bool
+     */
     public static function isValid(?string $token): bool
     {
         if (session_status() !== PHP_SESSION_ACTIVE) {
