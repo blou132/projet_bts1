@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" role="img" aria-label="Banniere Paddock Manager">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#161d2a"/>
+      <stop offset="100%" stop-color="#0f141f"/>
+    </linearGradient>
+    <linearGradient id="stroke" x1="0" x2="1" y1="0.5" y2="0.5">
+      <stop offset="0%" stop-color="#e10600"/>
+      <stop offset="100%" stop-color="#ff5a56"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="560" rx="40" fill="url(#bg)"/>
+  <path d="M90 400 C280 210 410 150 640 150 H1060 L920 290 H620 C490 290 390 330 260 440 H90 Z" fill="none" stroke="url(#stroke)" stroke-width="38" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="930" cy="300" r="13" fill="#ffffff"/>
+  <circle cx="720" cy="300" r="13" fill="#ffffff"/>
+  <circle cx="520" cy="300" r="13" fill="#ffffff"/>
+  <text x="90" y="122" fill="#f7f8fb" font-size="58" font-family="Space Grotesk, Arial, sans-serif" font-weight="700">Paddock Manager</text>
+  <text x="90" y="500" fill="#b7c1cf" font-size="34" font-family="Space Grotesk, Arial, sans-serif">Gestion des Grands Prix, ecuries et pilotes</text>
+</svg>
