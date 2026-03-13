@@ -17,6 +17,11 @@ Parcours express (2-3 min) :
 4. `/paris` -> classement global des parieurs
 5. `/ecuries` (admin) -> CRUD écuries/pilotes
 
+Acces documentation (important) :
+- le bouton "Docs" n'est plus dans la barre de navigation ;
+- l'examinateur doit ouvrir directement `http://localhost:8000/docs` ;
+- doc technique Doxygen : `http://localhost:8000/docs/doxygen/html/index.html`.
+
 Différence importante :
 - `Classement des paris` sur `/calendrier/course/ID` = classement de la course en cours.
 - `Classement des paris` sur `/paris` = classement cumulé saison.
