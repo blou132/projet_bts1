@@ -9,4 +9,8 @@ if ($path !== '/' && is_file($file)) {
     return false;
 }
 
+if ($path !== '/' && is_dir($file) && is_file(rtrim($file, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'index.php')) {
+    return false;
+}
+
 require __DIR__ . '/index.php';

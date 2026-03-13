@@ -76,10 +76,17 @@ Runner de tests local :
 php tests/run.php
 ```
 
+Etat actuel :
+- suite validee en `20/20`
+- couverture unitaire + base de donnees + pages HTTP publiques
+
 Fichiers de tests :
 - `tests/Unit/CsrfTest.php`
 - `tests/Unit/HtmlControllerTest.php`
 - `tests/Unit/ModelsTest.php`
+- `tests/Unit/SeasonControllerTest.php`
+- `tests/Integration/DatabaseSmokeTest.php`
+- `tests/Integration/PublicRoutesTest.php`
 
 ## Documentation PHP (PHPDoc / phpDocumentor)
 

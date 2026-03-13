@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 require __DIR__ . '/bootstrap.php';
 
-$files = glob(__DIR__ . '/Unit/*Test.php');
+$files = array_merge(
+    glob(__DIR__ . '/Unit/*Test.php') ?: [],
+    glob(__DIR__ . '/Integration/*Test.php') ?: []
+);
 sort($files);
 
 foreach ($files as $file) {

@@ -11,6 +11,17 @@ php tests/run.php
 Resultat attendu:
 - sortie `[OK]` pour chaque test
 - ligne finale `Resultat: X/X tests OK`
+- etat actuel valide : `20/20 tests OK`
+
+Couverture automatique actuelle:
+- securite CSRF
+- menu principal
+- modeles metier
+- bareme F1 des points
+- connexion MySQL et tables principales
+- pages publiques (`/accueil`, `/documentation`, `/docs`, `/calendrier`, `/paris`, `/auth/login`, `/auth/register`)
+- verification d'une redirection vers la connexion sur action POST non authentifiee
+- tests HTTP reels lances via le serveur PHP integre
 
 ## Authentification
 
