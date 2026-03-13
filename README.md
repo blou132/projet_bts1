@@ -12,15 +12,15 @@ Comptes de démonstration :
 
 Parcours express (2-3 min) :
 1. `/accueil` -> vue globale
-2. `/docs` (ou `/documentation`) -> hub docs (texte, architecture, tests, credentials)
+2. `/documentation` -> hub docs (texte, architecture, tests, credentials)
 3. `/calendrier` puis `/calendrier/course/ID` -> détails course + pari
 4. `/paris` -> classement global des parieurs
 5. `/ecuries` (admin) -> CRUD écuries/pilotes
 
 Acces documentation (important) :
 - le bouton "Docs" n'est plus dans la barre de navigation ;
-- l'examinateur doit ouvrir directement `http://localhost:8000/docs` ;
-- doc technique Doxygen : `http://localhost:8000/docs/doxygen/html/index.html`.
+- `http://localhost:8000/docs` ouvre directement la doc Doxygen ;
+- `http://localhost:8000/documentation` ouvre le hub de documentation projet.
 
 Différence importante :
 - `Classement des paris` sur `/calendrier/course/ID` = classement de la course en cours.
@@ -63,7 +63,7 @@ Note pour l'examinateur :
 ## Routes principales
 
 - `/accueil` : tableau de bord.
-- `/docs` : alias court vers la documentation.
+- `/docs` : accès direct à la doc Doxygen.
 - `/documentation` : hub de documentation.
 - `/ecuries` : gestion écuries + pilotes.
 - `/calendrier` : calendrier saison 2026.
@@ -129,7 +129,7 @@ DB_CHARSET=utf8mb4
 ## Règles d'accès
 
 - Sans connexion : lecture des pages publiques.
-- Documentation accessible sans connexion : `/docs` et `/documentation`.
+- Documentation accessible sans connexion : `/docs` (Doxygen) et `/documentation` (hub).
 - Utilisateur connecté : peut poser/modifier son pari podium.
 - Admin : gestion (ajout/modification/suppression) écuries, pilotes, résultats.
 - Résultats course : points attribués automatiquement selon le barème F1 (25, 18, 15, 12, 10, 8, 6, 4, 2, 1).

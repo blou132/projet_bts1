@@ -19,7 +19,7 @@ test('HTTP: alias /docs actif', function (): void {
     $response = httpRequest('GET', '/docs');
 
     expectSame(200, $response['status'], 'La route /docs doit fonctionner.');
-    expectContains('Documentation projet', $response['body'], 'La route /docs doit mener au hub documentation.');
+    expectContains('TPFormula1 Documentation', $response['body'], 'La route /docs doit ouvrir la documentation Doxygen.');
 });
 
 test('HTTP: calendrier accessible', function (): void {

@@ -139,6 +139,9 @@ switch ($route) {
         exit;
 
     case 'docs':
+        header('Location: /docs/doxygen/html/index.html');
+        exit;
+
     case 'documentation':
         require __DIR__ . '/Views/layout/header.lame.php';
         require __DIR__ . '/Views/docs.lame.php';
