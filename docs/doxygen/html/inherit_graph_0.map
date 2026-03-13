@@ -1,0 +1,8 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classApp_1_1Controllers_1_1BaseController.html" title="Classe de base pour les contrôleurs." alt="" coords="5,123,228,149"/>
+<area shape="rect" id="node2" href="$classApp_1_1Controllers_1_1AuthController.html" title="Gère l&#39;authentification basique (login/logout) pour l&#39;espace back&#45;office." alt="" coords="285,5,505,32"/>
+<area shape="rect" id="node3" href="$classApp_1_1Controllers_1_1ChampionnatController.html" title="Gère le CRUD des Grands Prix (anciennement championnats)." alt="" coords="288,57,501,98"/>
+<area shape="rect" id="node4" href="$classApp_1_1Controllers_1_1EquipeController.html" title="Contrôleur CRUD des écuries de Formule 1." alt="" coords="277,123,512,149"/>
+<area shape="rect" id="node5" href="$classApp_1_1Controllers_1_1JoueurController.html" title="Contrôleur CRUD des pilotes et vue jointure avec leurs écuries." alt="" coords="279,173,510,200"/>
+<area shape="rect" id="node6" href="$classApp_1_1Controllers_1_1SeasonController.html" title="Présente des vues synthétiques de la saison : calendrier et classement démo." alt="" coords="276,224,513,251"/>
+</map>

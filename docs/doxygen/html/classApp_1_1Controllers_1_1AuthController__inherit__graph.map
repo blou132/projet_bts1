@@ -1,0 +1,4 @@
+<map id="App\Controllers\AuthController" name="App\Controllers\AuthController">
+<area shape="rect" id="node1" title="Gère l&#39;authentification basique (login/logout) pour l&#39;espace back&#45;office." alt="" coords="7,80,227,107"/>
+<area shape="rect" id="node2" href="$classApp_1_1Controllers_1_1BaseController.html" title="Classe de base pour les contrôleurs." alt="" coords="5,5,228,32"/>
+</map>

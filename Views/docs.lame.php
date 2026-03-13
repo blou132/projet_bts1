@@ -49,7 +49,7 @@
 
     <article class="results-panel docs-card">
       <h3>Documentation technique</h3>
-      <p>Guides de generation et README.</p>
+      <p>Guides de generation et doc HTML.</p>
       <div class="home-driver-list">
         <a class="home-driver-item" href="/README.md" target="_blank" rel="noopener">
           <div class="home-item-copy">
@@ -60,8 +60,15 @@
         </a>
         <a class="home-driver-item" href="/docs/phpdoc.md" target="_blank" rel="noopener">
           <div class="home-item-copy">
-            <strong>Guide phpDocumentor</strong>
+            <strong>Guide DocBlocks + Doxygen</strong>
             <span>Comment generer la documentation PHP</span>
+          </div>
+          <span class="docs-item-end">ouvrir</span>
+        </a>
+        <a class="home-driver-item" href="/docs/doxygen/html/index.html" target="_blank" rel="noopener">
+          <div class="home-item-copy">
+            <strong>Doxygen HTML</strong>
+            <span>Documentation technique generee</span>
           </div>
           <span class="docs-item-end">ouvrir</span>
         </a>

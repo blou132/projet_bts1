@@ -1,0 +1,4 @@
+<map id="App\Controllers\SeasonController" name="App\Controllers\SeasonController">
+<area shape="rect" id="node1" title="Présente des vues synthétiques de la saison : calendrier et classement démo." alt="" coords="5,80,243,107"/>
+<area shape="rect" id="node2" href="$classApp_1_1Controllers_1_1BaseController.html" title="Classe de base pour les contrôleurs." alt="" coords="13,5,235,32"/>
+</map>

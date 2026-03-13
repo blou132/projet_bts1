@@ -1,86 +1,66 @@
-# Documentation PHP et DocBlocks
+# Documentation PHP (DocBlocks + Doxygen)
 
-Ce projet suit une approche PHPDoc :
-- docblocks sur classes, proprietes et methodes ;
-- generation possible d'une documentation HTML avec `phpDocumentor`.
+Ce projet utilise des DocBlocks PHP et une generation HTML avec `doxygen`.
 
-## Structure attendue des DocBlocks
+## Regles DocBlock (attendues)
 
-Les PDF de reference demandent de documenter au minimum :
-- les classes ;
-- les proprietes avec `@var` ;
-- les methodes avec `@param` et `@return` ;
-- les exceptions avec `@throws` quand necessaire.
+Les elements minimaux a documenter :
+- classes
+- proprietes avec `@var`
+- methodes avec `@param` et `@return`
+- exceptions avec `@throws` si necessaire
 
-Exemple simple :
+Exemple :
 
 ```php
 /**
- * Class Car
- *
- * This class represents a car.
+ * Classe de service exemple.
  */
-class Car
+class ExampleService
 {
-    /**
-     * @var string The make of the car.
-     */
-    private string $make;
+    /** @var string Nom courant */
+    private string $name = '';
 
     /**
-     * Set the make of the car.
+     * Met a jour le nom.
      *
-     * @param string $make The make of the car.
+     * @param string $name Nouveau nom
      * @return void
      */
-    public function setMake(string $make): void
+    public function setName(string $name): void
     {
-        $this->make = $make;
+        $this->name = $name;
     }
 }
 ```
 
-## Balises principales
+## Fichiers documentes en priorite
 
-- `@var` : type et role d'une propriete
-- `@param` : description d'un parametre
-- `@return` : type de retour
-- `@throws` : exception possible
-- `@package` : package logique si besoin
-
-## Fichiers du projet deja documentes
-
-Les docblocks ont ete poses en priorite sur :
 - `Models/Equipe.php`
 - `Models/Joueur.php`
 - `Models/Championnat.php`
 - `Security/Csrf.php`
 - `Database/Database.php`
 
-## Installation de phpDocumentor
+## Generation avec Doxygen
 
-Option 1 :
+Configuration deja fournie a la racine : `Doxyfile`
 
-```bash
-composer require --dev phpdocumentor/phpdocumentor
-```
-
-Option 2 :
+Commande :
 
 ```bash
-wget https://phpdoc.org/phpDocumentor.phar
-chmod +x phpDocumentor.phar
-sudo mv phpDocumentor.phar /usr/local/bin/phpdoc
+doxygen Doxyfile
 ```
 
-## Generation de la documentation HTML
+Resultat :
+- dossier `docs/doxygen/html`
+- page d'entree `docs/doxygen/html/index.html`
+- URL locale : `http://localhost:8000/docs/doxygen/html/index.html`
 
-Depuis la racine du projet :
+## Option alternative (phpDocumentor)
+
+Si besoin, la generation phpDocumentor reste possible :
 
 ```bash
 phpdoc -d Controllers,Models,Security,Database,Routes -t docs/api --ignore "Public/*,Views/*,tests/*,docs/api/*"
 ```
-
-Resultat attendu :
-- un dossier `docs/api`
-- un `index.html` genere par `phpDocumentor`

@@ -88,15 +88,25 @@ Fichiers de tests :
 - `tests/Integration/DatabaseSmokeTest.php`
 - `tests/Integration/PublicRoutesTest.php`
 
-## Documentation PHP (PHPDoc / phpDocumentor)
+## Documentation PHP (DocBlocks + Doxygen)
 
-Génération HTML :
+Configuration fournie : `Doxyfile`
+
+Generation HTML :
+
+```bash
+doxygen Doxyfile
+```
+
+Sortie :
+- `docs/doxygen/html/index.html`
+- URL locale : `http://localhost:8000/docs/doxygen/html/index.html`
+
+Alternative possible (optionnelle) avec phpDocumentor :
 
 ```bash
 phpdoc -d Controllers,Models,Security,Database,Routes -t docs/api --ignore "Public/*,Views/*,tests/*,docs/api/*"
 ```
-
-Sortie : `docs/api`
 
 ## Variables d'environnement
 

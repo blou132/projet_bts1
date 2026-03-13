@@ -1,0 +1,4 @@
+<map id="App\Controllers\JoueurController" name="App\Controllers\JoueurController">
+<area shape="rect" id="node1" title="Contrôleur CRUD des pilotes et vue jointure avec leurs écuries." alt="" coords="5,80,236,107"/>
+<area shape="rect" id="node2" href="$classApp_1_1Controllers_1_1BaseController.html" title="Classe de base pour les contrôleurs." alt="" coords="9,5,232,32"/>
+</map>

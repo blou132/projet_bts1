@@ -12,7 +12,6 @@ class HtmlController
     {
         $items = [
             'Accueil' => '/accueil',
-            'Docs' => '/documentation',
             'Écuries' => '/ecuries',
             'Calendrier 2026' => '/calendrier',
             'Classement' => '/classements',
