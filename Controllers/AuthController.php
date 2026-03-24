@@ -6,6 +6,7 @@ namespace App\Controllers;
 use App\Database\Database;
 use App\Controllers\ValidationController;
 use App\Security\Csrf;
+use App\Security\SecurityLogger;
 
 /**
  * Gère l'authentification basique (login/logout) pour l'espace back-office.
@@ -55,6 +56,7 @@ class AuthController extends BaseController
         }
 
         if ($errors) {
+            SecurityLogger::authFail($email, 'invalid_payload');
             $flash = $_SESSION['flash_error'] ?? null;
             unset($_SESSION['flash_error']);
             $this->render('auth/login.lame.php', [
@@ -71,6 +73,7 @@ class AuthController extends BaseController
         $user = $stmt->fetch();
 
         if (!$user || !password_verify($password, $user['password'])) {
+            SecurityLogger::authFail($email, 'invalid_credentials');
             $flash = $_SESSION['flash_error'] ?? null;
             unset($_SESSION['flash_error']);
             $this->render('auth/login.lame.php', [

@@ -1,0 +1,8 @@
+[tpformula1-auth]
+enabled = true
+filter = tpformula1-auth
+port = http,https
+logpath = /var/www/tpformula1/storage/logs/security.log
+maxretry = 5
+findtime = 10m
+bantime = 1h

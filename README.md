@@ -82,7 +82,7 @@ php tests/run.php
 ```
 
 Etat actuel :
-- suite validee en `20/20`
+- suite complete (unitaires + integration) via `php tests/run.php`
 - couverture unitaire + base de donnees + pages HTTP publiques
 
 Fichiers de tests :
@@ -90,6 +90,7 @@ Fichiers de tests :
 - `tests/Unit/HtmlControllerTest.php`
 - `tests/Unit/ModelsTest.php`
 - `tests/Unit/SeasonControllerTest.php`
+- `tests/Unit/ValidationControllerTest.php`
 - `tests/Integration/DatabaseSmokeTest.php`
 - `tests/Integration/PublicRoutesTest.php`
 
@@ -151,7 +152,16 @@ DB_CHARSET=utf8mb4
 - `docs/backlog.md` : user stories et priorités.
 - `docs/plan-tests.md` : plan de tests manuels + runner.
 - `docs/phpdoc.md` : guide de génération de doc PHP.
+- `docs/fail2ban.md` : mise en place fail2ban (anti brute force).
 - `docs/credentials.txt` : identifiants de démonstration.
+
+## Fail2ban (anti brute force)
+
+- Les echecs de connexion sont journalises dans `storage/logs/security.log`.
+- Config fail2ban fournie :
+  - `ops/fail2ban/filter.d/tpformula1-auth.conf`
+  - `ops/fail2ban/jail.d/tpformula1-auth.local`
+- Guide d'installation serveur : `docs/fail2ban.md`.
 
 ## Dépannage rapide
 

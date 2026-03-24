@@ -72,6 +72,13 @@
           </div>
           <span class="docs-item-end">ouvrir</span>
         </a>
+        <a class="home-driver-item" href="/docs/fail2ban.md" target="_blank" rel="noopener">
+          <div class="home-item-copy">
+            <strong>Guide Fail2ban</strong>
+            <span>Protection brute force login</span>
+          </div>
+          <span class="docs-item-end">ouvrir</span>
+        </a>
       </div>
     </article>
   </div>
