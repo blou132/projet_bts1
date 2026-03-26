@@ -1,6 +1,8 @@
 (() => {
   const $ = (s, root = document) => root.querySelector(s);
   const $$ = (s, root = document) => [...root.querySelectorAll(s)];
+  const rgpdText =
+    "Les informations collectees sont utilisees uniquement pour repondre a votre demande. Conformement au RGPD, vous pouvez exercer vos droits d'acces, de rectification et de suppression en nous contactant.";
 
   const parseCell = (text) => {
     const v = (text || '').trim();
@@ -147,9 +149,51 @@
           body: new FormData(form),
         });
         const html = await res.text();
-        if (html.trim()) panel.outerHTML = html;
+        if (html.trim()) {
+          panel.outerHTML = html;
+          addRgpdNotices();
+        }
       } finally {
         if (btn) btn.disabled = false;
+      }
+    });
+  };
+
+  const addRgpdNotices = (root = document) => {
+    $$('form', root).forEach((form) => {
+      if (form.dataset.rgpdNotice === '1') return;
+
+      const note = document.createElement('p');
+      note.className = 'rgpd-note';
+      note.textContent = rgpdText;
+      form.appendChild(note);
+      form.dataset.rgpdNotice = '1';
+    });
+  };
+
+  const initCookieBanner = () => {
+    const banner = $('#cookie-banner');
+    const button = $('#cookie-accept');
+    if (!banner || !button) return;
+
+    const key = 'tpformula1_cookie_ok';
+    let accepted = false;
+    try {
+      accepted = window.localStorage.getItem(key) === '1';
+    } catch (_) {
+      accepted = false;
+    }
+
+    if (!accepted) {
+      banner.hidden = false;
+    }
+
+    button.addEventListener('click', () => {
+      banner.hidden = true;
+      try {
+        window.localStorage.setItem(key, '1');
+      } catch (_) {
+        // Ignore storage errors.
       }
     });
   };
@@ -221,11 +265,13 @@
   };
 
   document.addEventListener('DOMContentLoaded', () => {
+    addRgpdNotices();
     initFilters();
     initSort();
     initCountdown();
     initAjaxResults();
     initModal();
     initMobileMenu();
+    initCookieBanner();
   });
 })();

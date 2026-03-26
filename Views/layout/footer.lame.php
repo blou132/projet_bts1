@@ -1,7 +1,16 @@
 </main>
 <footer class="site-footer">
   <small>&copy; <?= date('Y'); ?> Formula 1 Manager — Projet pédagogique BTS SIO SLAM</small>
+  <p class="footer-links">
+    <a href="/mentions-legales.html">Mentions legales</a>
+    <span aria-hidden="true">|</span>
+    <a href="/politique-confidentialite.html">Politique de confidentialite</a>
+  </p>
 </footer>
+<aside class="cookie-banner" id="cookie-banner" hidden>
+  <p>Ce site utilise des cookies techniques de session. En continuant, vous acceptez leur utilisation.</p>
+  <button type="button" class="btn" id="cookie-accept">OK</button>
+</aside>
 <?php if (empty($currentUser)): ?>
   <?php
   $requestUri = $_SERVER['REQUEST_URI'] ?? '/accueil';
