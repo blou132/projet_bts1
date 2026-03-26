@@ -177,24 +177,33 @@
     if (!banner || !button) return;
 
     const key = 'tpformula1_cookie_ok';
-    let accepted = false;
-    try {
-      accepted = window.localStorage.getItem(key) === '1';
-    } catch (_) {
-      accepted = false;
-    }
+    const readCookie = () => document.cookie.split('; ').some((item) => item === `${key}=1`);
+    const readConsent = () => {
+      try {
+        if (window.localStorage.getItem(key) === '1') return true;
+      } catch (_) {
+        // localStorage can be blocked by browser privacy settings.
+      }
+      return readCookie();
+    };
 
-    if (!accepted) {
-      banner.hidden = false;
-    }
-
-    button.addEventListener('click', () => {
-      banner.hidden = true;
+    const saveConsent = () => {
       try {
         window.localStorage.setItem(key, '1');
       } catch (_) {
         // Ignore storage errors.
       }
+      const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+      document.cookie = `${key}=1; Max-Age=31536000; Path=/; SameSite=Lax${secure}`;
+    };
+
+    if (!readConsent()) {
+      banner.hidden = false;
+    }
+
+    button.addEventListener('click', () => {
+      banner.hidden = true;
+      saveConsent();
     });
   };
 
@@ -265,13 +274,21 @@
   };
 
   document.addEventListener('DOMContentLoaded', () => {
-    addRgpdNotices();
-    initFilters();
-    initSort();
-    initCountdown();
-    initAjaxResults();
-    initModal();
-    initMobileMenu();
-    initCookieBanner();
+    const safeRun = (fn) => {
+      try {
+        fn();
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    safeRun(initCookieBanner);
+    safeRun(addRgpdNotices);
+    safeRun(initFilters);
+    safeRun(initSort);
+    safeRun(initCountdown);
+    safeRun(initAjaxResults);
+    safeRun(initModal);
+    safeRun(initMobileMenu);
   });
 })();
