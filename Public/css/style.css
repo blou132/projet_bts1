@@ -112,9 +112,9 @@ summary { min-height: 38px; padding: 0.45rem 0.75rem; border-radius: 8px; border
 button[type="submit"],
 .home-btn-primary { background: var(--accent); border-color: #a30500; color: #fff; }
 .home-btn-ghost,
-.login-link,
 .user-logout,
 .danger { background: #202734; }
+.header-actions .login-link { background: #202734; border-color: #a30500; }
 .danger { border-color: #7b3131; color: #ffdede; }
 .nav-toggle { display: none; }
 .nav-link,
@@ -375,6 +375,9 @@ textarea { width: 100%; padding: 0.55rem 0.6rem; border: 1px solid var(--line); 
 
 .alert { margin: 0.75rem 0; padding: 0.65rem 0.75rem; border-radius: 8px; border: 1px solid #6c3030; background: #2a1717; }
 .alert.success { border-color: #2f7047; background: #14271c; }
+
+.bet-login { display: grid; gap: 0.4rem; justify-items: start; }
+.bet-login .login-link { min-width: 140px; justify-content: center; }
 
 .results-empty,
 .auth-subtitle,

@@ -15,12 +15,16 @@ $grandsPrix = [
     ['nom' => 'Grand Prix de Bahreïn',        'pays' => 'Bahreïn',      'blason' => null],
     ['nom' => 'Grand Prix de Monaco',         'pays' => 'Monaco',       'blason' => null],
     ['nom' => 'Grand Prix de Grande-Bretagne','pays' => 'Royaume-Uni',  'blason' => null],
+    ['nom' => 'Grand Prix d Italie',          'pays' => 'Italie',       'blason' => null],
+    ['nom' => 'Grand Prix d Australie',       'pays' => 'Australie',    'blason' => null],
 ];
 
 $equipes = [
     ['nom' => 'Mercedes-AMG Petronas', 'pays' => 'Royaume-Uni', 'championnat' => 3, 'blason' => null],
     ['nom' => 'Oracle Red Bull Racing','pays' => 'Royaume-Uni', 'championnat' => 1, 'blason' => null],
-    ['nom' => 'Scuderia Ferrari',      'pays' => 'Italie',      'championnat' => 2, 'blason' => null],
+    ['nom' => 'Scuderia Ferrari',      'pays' => 'Italie',      'championnat' => 4, 'blason' => null],
+    ['nom' => 'McLaren Formula 1 Team','pays' => 'Royaume-Uni', 'championnat' => 3, 'blason' => null],
+    ['nom' => 'Aston Martin Aramco',   'pays' => 'Royaume-Uni', 'championnat' => 3, 'blason' => null],
 ];
 
 $courses = [
@@ -56,37 +60,57 @@ $pilotes = [
     ['nom' => 'Perez',      'prenom' => 'Sergio',  'poste' => 'Pilote titulaire', 'equipe' => 2, 'photo' => null],
     ['nom' => 'Leclerc',    'prenom' => 'Charles', 'poste' => 'Pilote titulaire', 'equipe' => 3, 'photo' => null],
     ['nom' => 'Sainz',      'prenom' => 'Carlos',  'poste' => 'Pilote titulaire', 'equipe' => 3, 'photo' => null],
+    ['nom' => 'Norris',     'prenom' => 'Lando',   'poste' => 'Pilote titulaire', 'equipe' => 4, 'photo' => null],
+    ['nom' => 'Piastri',    'prenom' => 'Oscar',   'poste' => 'Pilote titulaire', 'equipe' => 4, 'photo' => null],
+    ['nom' => 'Alonso',     'prenom' => 'Fernando','poste' => 'Pilote titulaire', 'equipe' => 5, 'photo' => null],
+    ['nom' => 'Stroll',     'prenom' => 'Lance',   'poste' => 'Pilote titulaire', 'equipe' => 5, 'photo' => null],
 ];
 
 $courseResults = [
     // Bahreïn
     ['course_code' => 'BHR', 'joueur' => 3, 'position' => 1, 'points' => 25],
-    ['course_code' => 'BHR', 'joueur' => 1, 'position' => 2, 'points' => 18],
+    ['course_code' => 'BHR', 'joueur' => 7, 'position' => 2, 'points' => 18],
     ['course_code' => 'BHR', 'joueur' => 5, 'position' => 3, 'points' => 15],
-    ['course_code' => 'BHR', 'joueur' => 2, 'position' => 4, 'points' => 12],
-    ['course_code' => 'BHR', 'joueur' => 4, 'position' => 5, 'points' => 10],
-    ['course_code' => 'BHR', 'joueur' => 6, 'position' => 6, 'points' => 8],
+    ['course_code' => 'BHR', 'joueur' => 1, 'position' => 4, 'points' => 12],
+    ['course_code' => 'BHR', 'joueur' => 8, 'position' => 5, 'points' => 10],
+    ['course_code' => 'BHR', 'joueur' => 2, 'position' => 6, 'points' => 8],
+    ['course_code' => 'BHR', 'joueur' => 9, 'position' => 7, 'points' => 6],
+    ['course_code' => 'BHR', 'joueur' => 4, 'position' => 8, 'points' => 4],
+    ['course_code' => 'BHR', 'joueur' => 6, 'position' => 9, 'points' => 2],
+    ['course_code' => 'BHR', 'joueur' => 10, 'position' => 10, 'points' => 1],
     // Arabie saoudite
     ['course_code' => 'SAU', 'joueur' => 3, 'position' => 1, 'points' => 25],
-    ['course_code' => 'SAU', 'joueur' => 4, 'position' => 2, 'points' => 18],
-    ['course_code' => 'SAU', 'joueur' => 5, 'position' => 3, 'points' => 15],
-    ['course_code' => 'SAU', 'joueur' => 6, 'position' => 4, 'points' => 12],
+    ['course_code' => 'SAU', 'joueur' => 5, 'position' => 2, 'points' => 18],
+    ['course_code' => 'SAU', 'joueur' => 7, 'position' => 3, 'points' => 15],
+    ['course_code' => 'SAU', 'joueur' => 8, 'position' => 4, 'points' => 12],
     ['course_code' => 'SAU', 'joueur' => 1, 'position' => 5, 'points' => 10],
     ['course_code' => 'SAU', 'joueur' => 2, 'position' => 6, 'points' => 8],
+    ['course_code' => 'SAU', 'joueur' => 4, 'position' => 7, 'points' => 6],
+    ['course_code' => 'SAU', 'joueur' => 9, 'position' => 8, 'points' => 4],
+    ['course_code' => 'SAU', 'joueur' => 6, 'position' => 9, 'points' => 2],
+    ['course_code' => 'SAU', 'joueur' => 10, 'position' => 10, 'points' => 1],
     // Australie
-    ['course_code' => 'AUS', 'joueur' => 5, 'position' => 1, 'points' => 25],
+    ['course_code' => 'AUS', 'joueur' => 7, 'position' => 1, 'points' => 25],
     ['course_code' => 'AUS', 'joueur' => 3, 'position' => 2, 'points' => 18],
-    ['course_code' => 'AUS', 'joueur' => 1, 'position' => 3, 'points' => 15],
-    ['course_code' => 'AUS', 'joueur' => 6, 'position' => 4, 'points' => 12],
-    ['course_code' => 'AUS', 'joueur' => 4, 'position' => 5, 'points' => 10],
+    ['course_code' => 'AUS', 'joueur' => 8, 'position' => 3, 'points' => 15],
+    ['course_code' => 'AUS', 'joueur' => 5, 'position' => 4, 'points' => 12],
+    ['course_code' => 'AUS', 'joueur' => 1, 'position' => 5, 'points' => 10],
     ['course_code' => 'AUS', 'joueur' => 2, 'position' => 6, 'points' => 8],
+    ['course_code' => 'AUS', 'joueur' => 9, 'position' => 7, 'points' => 6],
+    ['course_code' => 'AUS', 'joueur' => 4, 'position' => 8, 'points' => 4],
+    ['course_code' => 'AUS', 'joueur' => 6, 'position' => 9, 'points' => 2],
+    ['course_code' => 'AUS', 'joueur' => 10, 'position' => 10, 'points' => 1],
     // Italie
     ['course_code' => 'ITA', 'joueur' => 5, 'position' => 1, 'points' => 25],
     ['course_code' => 'ITA', 'joueur' => 6, 'position' => 2, 'points' => 18],
-    ['course_code' => 'ITA', 'joueur' => 3, 'position' => 3, 'points' => 15],
-    ['course_code' => 'ITA', 'joueur' => 1, 'position' => 4, 'points' => 12],
-    ['course_code' => 'ITA', 'joueur' => 2, 'position' => 5, 'points' => 10],
-    ['course_code' => 'ITA', 'joueur' => 4, 'position' => 6, 'points' => 8],
+    ['course_code' => 'ITA', 'joueur' => 7, 'position' => 3, 'points' => 15],
+    ['course_code' => 'ITA', 'joueur' => 3, 'position' => 4, 'points' => 12],
+    ['course_code' => 'ITA', 'joueur' => 8, 'position' => 5, 'points' => 10],
+    ['course_code' => 'ITA', 'joueur' => 1, 'position' => 6, 'points' => 8],
+    ['course_code' => 'ITA', 'joueur' => 2, 'position' => 7, 'points' => 6],
+    ['course_code' => 'ITA', 'joueur' => 4, 'position' => 8, 'points' => 4],
+    ['course_code' => 'ITA', 'joueur' => 9, 'position' => 9, 'points' => 2],
+    ['course_code' => 'ITA', 'joueur' => 10, 'position' => 10, 'points' => 1],
 ];
 
 $users = [
@@ -102,6 +126,20 @@ $users = [
         'password' => password_hash('123456789', PASSWORD_DEFAULT),
         'role' => 'user',
     ],
+    [
+        'name' => 'Examinateur Demo',
+        'email' => 'examinateur@example.com',
+        'password' => password_hash('123456789', PASSWORD_DEFAULT),
+        'role' => 'user',
+    ],
+];
+
+$bets = [
+    ['user_email' => 'example@gmail.com', 'course_code' => 'AUS', 'first' => 7, 'second' => 3, 'third' => 8],
+    ['user_email' => 'admin@example.com', 'course_code' => 'AUS', 'first' => 3, 'second' => 7, 'third' => 5],
+    ['user_email' => 'examinateur@example.com', 'course_code' => 'AUS', 'first' => 5, 'second' => 3, 'third' => 7],
+    ['user_email' => 'example@gmail.com', 'course_code' => 'BHR', 'first' => 3, 'second' => 7, 'third' => 5],
+    ['user_email' => 'admin@example.com', 'course_code' => 'BHR', 'first' => 3, 'second' => 5, 'third' => 1],
 ];
 
 try {
@@ -139,8 +177,26 @@ try {
     }
 
     $stmtUser = $pdo->prepare('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)');
+    $userIds = [];
     foreach ($users as $user) {
         $stmtUser->execute([$user['name'], $user['email'], $user['password'], $user['role']]);
+        $userIds[$user['email']] = (int)$pdo->lastInsertId();
+    }
+
+    $stmtBet = $pdo->prepare('INSERT INTO bets (user_id, course_id, first_joueur_id, second_joueur_id, third_joueur_id) VALUES (?, ?, ?, ?, ?)');
+    foreach ($bets as $bet) {
+        $userId = $userIds[$bet['user_email']] ?? 0;
+        $courseId = $courseIds[$bet['course_code']] ?? 0;
+        if ($userId <= 0 || $courseId <= 0) {
+            continue;
+        }
+        $stmtBet->execute([
+            $userId,
+            $courseId,
+            (int)$bet['first'],
+            (int)$bet['second'],
+            (int)$bet['third'],
+        ]);
     }
 
     $pdo->commit();

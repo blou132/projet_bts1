@@ -9,6 +9,7 @@ Base locale : `http://localhost:8000`
 Comptes demo :
 - Admin : `admin@example.com` / `admin123`
 - Utilisateur : `example@gmail.com` / `123456789`
+- Examinateur : `examinateur@example.com` / `123456789`
 
 Parcours conseille (3 minutes) :
 1. `/accueil`
@@ -32,6 +33,7 @@ Prerequis :
 Un seul script fait tout :
 - creation base MySQL + utilisateur depuis `.env`
 - initialisation des donnees
+- execution des tests automatiques
 - lancement du serveur PHP
 
 ```bash

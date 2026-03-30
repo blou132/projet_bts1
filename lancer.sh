@@ -61,6 +61,9 @@ fi
 echo "Initialisation des donnees..."
 php init_db.php
 
+echo "Execution des tests..."
+php tests/run.php
+
 echo
 echo "Projet pret."
 echo "- URL: http://localhost:8000/accueil"
