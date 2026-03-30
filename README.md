@@ -27,6 +27,24 @@ Prerequis :
 - PHP 8.1+
 - MySQL 5.7+ / 8+
 
+### Option A (recommandee) - script automatique
+
+Un seul script fait tout :
+- creation base MySQL + utilisateur depuis `.env`
+- initialisation des donnees
+- lancement du serveur PHP
+
+```bash
+./lancer.sh
+```
+
+Puis ouvrir : `http://localhost:8000/accueil`
+
+Astuce "1 clic" :
+- dans l'explorateur de fichiers Linux, double-cliquer `lancer.sh` et choisir "Executer dans un terminal".
+
+### Option B - manuel
+
 1) Ouvrir MySQL (dans le terminal) :
 
 ```bash
