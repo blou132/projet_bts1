@@ -27,11 +27,20 @@ Prerequis :
 - PHP 8.1+
 - MySQL 5.7+ / 8+
 
-Commandes :
+1) Ouvrir MySQL (dans le terminal) :
+
+```bash
+mysql -u root -p
+```
+
+2) Creer la base (dans MySQL) :
 
 ```sql
 CREATE DATABASE tpformula1 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+exit;
 ```
+
+3) Initialiser et lancer le projet (dans le terminal) :
 
 ```bash
 cp .env.example .env
@@ -78,3 +87,4 @@ Historique de dev :
 
 - `Access denied for user ...` : verifier `.env` (DB_USER / DB_PASS).
 - `Unknown database 'tpformula1'` : creer la base puis relancer `php init_db.php`.
+- Si `mysql -u root -p` ne passe pas sous Ubuntu : essayer `sudo mysql`.
