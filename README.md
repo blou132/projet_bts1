@@ -43,31 +43,6 @@ Puis ouvrir : `http://localhost:8000/accueil`
 Astuce "1 clic" :
 - dans l'explorateur de fichiers Linux, double-cliquer `lancer.sh` et choisir "Executer dans un terminal".
 
-### Option B - manuel
-
-1) Ouvrir MySQL (dans le terminal) :
-
-```bash
-mysql -u root -p
-```
-
-2) Creer la base (dans MySQL) :
-
-```sql
-CREATE DATABASE tpformula1 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-exit;
-```
-
-3) Initialiser et lancer le projet (dans le terminal) :
-
-```bash
-cp .env.example .env
-php init_db.php
-php -S localhost:8000 router.php
-```
-
-Puis ouvrir : `http://localhost:8000/accueil`
-
 ## Ce qu'il faut verifier
 
 - CRUD ecuries/pilotes via `/ecuries` (admin).
@@ -103,6 +78,5 @@ Historique de dev :
 
 ## Depannage rapide
 
-- `Access denied for user ...` : verifier `.env` (DB_USER / DB_PASS).
-- `Unknown database 'tpformula1'` : creer la base puis relancer `php init_db.php`.
-- Si `mysql -u root -p` ne passe pas sous Ubuntu : essayer `sudo mysql`.
+- `Access denied for user ...` : verifier `.env` (DB_USER / DB_PASS), puis relancer `./lancer.sh`.
+- Si la base est invalide : relancer `./lancer.sh` (le script recree base/utilisateur + donnees).
