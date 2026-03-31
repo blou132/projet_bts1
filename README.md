@@ -69,6 +69,12 @@ php tests/run.php
   - `docs/architecture.md`
   - `docs/backlog.md`
   - `docs/plan-tests.md`
+  - `docs/diagramme-classe.png`
+  - `docs/diagramme-sequence.png`
+  - `docs/diagramme-utilisation.png`
+  - `docs/diagramme-classe.md`
+  - `docs/diagramme-sequence.md`
+  - `docs/diagramme-utilisation.md`
   - `docs/phpdoc.md`
   - `docs/fail2ban.md`
   - `docs/credentials.txt`

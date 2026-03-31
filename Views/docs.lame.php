@@ -37,6 +37,27 @@
           </div>
           <span class="docs-item-end">ouvrir</span>
         </a>
+        <a class="home-driver-item" href="/docs/diagramme-classe.png" target="_blank" rel="noopener">
+          <div class="home-item-copy">
+            <strong>Diagramme de classe</strong>
+            <span>Image UML (PNG)</span>
+          </div>
+          <span class="docs-item-end">ouvrir</span>
+        </a>
+        <a class="home-driver-item" href="/docs/diagramme-sequence.png" target="_blank" rel="noopener">
+          <div class="home-item-copy">
+            <strong>Diagramme de sequence</strong>
+            <span>Image UML (PNG)</span>
+          </div>
+          <span class="docs-item-end">ouvrir</span>
+        </a>
+        <a class="home-driver-item" href="/docs/diagramme-utilisation.png" target="_blank" rel="noopener">
+          <div class="home-item-copy">
+            <strong>Diagramme d utilisation</strong>
+            <span>Image UML (PNG)</span>
+          </div>
+          <span class="docs-item-end">ouvrir</span>
+        </a>
         <a class="home-driver-item" href="/docs/credentials.txt" target="_blank" rel="noopener">
           <div class="home-item-copy">
             <strong>Identifiants demo</strong>
