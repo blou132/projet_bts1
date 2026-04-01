@@ -43,7 +43,7 @@ if (!function_exists('asset_path')) {
     <div class="header-actions">
       <?php if (!empty($currentUser)): ?>
       <div class="user-chip">
-        <span class="user-name"><?= htmlspecialchars($currentUser['name'] ?? $currentUser['email'] ?? '') ?></span>
+        <span class="user-name">Connecte</span>
         <a class="user-logout" href="/auth/logout">Déconnexion</a>
       </div>
       <?php else: ?>

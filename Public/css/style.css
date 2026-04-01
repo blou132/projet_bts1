@@ -45,6 +45,7 @@ section,
 .bets-table-frame { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
 
 .site-header {
+  width: min(1280px, 97%);
   padding: 1rem;
   display: flex;
   flex-wrap: wrap;
@@ -78,7 +79,7 @@ section,
   text-transform: uppercase;
 }
 
-.header-right { flex: 1 1 460px; min-width: 0; display: flex; gap: 0.75rem; align-items: center; justify-content: flex-end; }
+.header-right { flex: 1 1 460px; min-width: 0; display: flex; gap: 0.75rem; align-items: center; justify-content: flex-end; flex-wrap: nowrap; }
 .main-nav { flex: 1 1 auto; min-width: 0; }
 .main-nav .nav-list {
   list-style: none;
@@ -86,10 +87,11 @@ section,
   flex-wrap: nowrap;
   gap: 0.45rem;
   overflow-x: auto;
-  padding-bottom: 0.2rem;
-  scrollbar-width: none;
+  padding-bottom: 0.15rem;
+  scrollbar-width: thin;
 }
-.main-nav .nav-list::-webkit-scrollbar { display: none; }
+.main-nav .nav-list::-webkit-scrollbar { height: 6px; }
+.main-nav .nav-list::-webkit-scrollbar-thumb { background: #34445d; border-radius: 999px; }
 .header-actions { margin-left: 0; display: flex; align-items: center; gap: 0.7rem; flex: 0 0 auto; }
 
 .nav-toggle,
@@ -477,6 +479,14 @@ th.sortable.is-desc::after { content: " ↓"; }
 .cookie-banner p {
   color: var(--muted);
   font-size: 0.85rem;
+}
+
+@media (max-width: 1120px) {
+  .site-header { width: min(1280px, 95%); }
+  .header-right { width: 100%; flex-wrap: wrap; }
+  .main-nav { width: 100%; }
+  .main-nav .nav-list { overflow-x: visible; flex-wrap: wrap; }
+  .header-actions { margin-left: auto; }
 }
 
 @media (max-width: 720px) {
