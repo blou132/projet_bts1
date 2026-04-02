@@ -18,7 +18,7 @@
   <?php endif; ?>
 
   <?php if (!empty($isAdmin)): ?>
-    <form method="post" enctype="multipart/form-data" action="/ecuries/store" class="team-form">
+    <form method="post" enctype="multipart/form-data" action="<?= htmlspecialchars(route_path('ecuries/store')) ?>" class="team-form">
       <fieldset>
         <legend>Ajouter une ecurie</legend>
         <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
@@ -71,7 +71,7 @@
                   <?php if (!empty($isAdmin)): ?>
                     <details class="pilot-actions">
                       <summary>Modifier</summary>
-                      <form method="post" enctype="multipart/form-data" action="/pilotes/update">
+                      <form method="post" enctype="multipart/form-data" action="<?= htmlspecialchars(route_path('pilotes/update')) ?>">
                         <input type="hidden" name="id" value="<?= (int)$pilote['id'] ?>">
                         <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
                         <label>Nom <input name="nom" value="<?= htmlspecialchars($pilote['nom']) ?>" required></label>
@@ -90,7 +90,7 @@
                         <label>Nouveau portrait <input type="file" name="photo" accept="image/*"></label>
                         <button>Mettre a jour</button>
                       </form>
-                      <form method="post" action="/pilotes/delete" onsubmit="return confirm('Supprimer ce pilote ?')">
+                      <form method="post" action="<?= htmlspecialchars(route_path('pilotes/delete')) ?>" onsubmit="return confirm('Supprimer ce pilote ?')">
                         <input type="hidden" name="id" value="<?= (int)$pilote['id'] ?>">
                         <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
                         <button class="danger">Supprimer</button>
@@ -108,7 +108,7 @@
             <div class="team-admin">
               <details class="team-admin-block">
                 <summary>Modifier l'ecurie</summary>
-                <form method="post" enctype="multipart/form-data" action="/ecuries/update">
+                <form method="post" enctype="multipart/form-data" action="<?= htmlspecialchars(route_path('ecuries/update')) ?>">
                   <input type="hidden" name="id" value="<?= $ecurieId ?>">
                   <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
                   <label>Nom <input name="nom" value="<?= htmlspecialchars($ecurie['nom']) ?>" required></label>
@@ -116,7 +116,7 @@
                   <label>Nouveau logo <input type="file" name="blason" accept="image/*"></label>
                   <button>Mettre a jour</button>
                 </form>
-                <form method="post" action="/ecuries/delete" onsubmit="return confirm('Supprimer cette ecurie ?')">
+                <form method="post" action="<?= htmlspecialchars(route_path('ecuries/delete')) ?>" onsubmit="return confirm('Supprimer cette ecurie ?')">
                   <input type="hidden" name="id" value="<?= $ecurieId ?>">
                   <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
                   <button class="danger">Supprimer</button>
@@ -125,7 +125,7 @@
 
               <details class="team-admin-block">
                 <summary>Ajouter un pilote</summary>
-                <form method="post" enctype="multipart/form-data" action="/pilotes/store">
+                <form method="post" enctype="multipart/form-data" action="<?= htmlspecialchars(route_path('pilotes/store')) ?>">
                   <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
                   <input type="hidden" name="id_ecurie" value="<?= $ecurieId ?>">
                   <label>Nom <input name="nom" type="text" required></label>

@@ -12,11 +12,11 @@ class HtmlController
     {
         $currentPath = $this->currentPath();
         $items = [
-            'Accueil' => '/accueil',
-            'Écuries' => '/ecuries',
-            'Calendrier 2026' => '/calendrier',
-            'Classement' => '/classements',
-            'Paris sportifs' => '/paris',
+            'Accueil' => \route_path('accueil'),
+            'Ecuries' => \route_path('ecuries'),
+            'Calendrier 2026' => \route_path('calendrier'),
+            'Classement' => \route_path('classements'),
+            'Paris sportifs' => \route_path('paris'),
         ];
         $html = '<nav class="main-nav" id="main-navigation"><ul class="nav-list">';
         foreach ($items as $label => $href) {

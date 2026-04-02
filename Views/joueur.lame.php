@@ -7,7 +7,7 @@
   <?php endif; ?>
 
   <?php if (!empty($isAdmin)): ?>
-    <form method="post" enctype="multipart/form-data" action="/pilotes/store">
+    <form method="post" enctype="multipart/form-data" action="<?= htmlspecialchars(route_path('pilotes/store')) ?>">
       <fieldset>
         <legend>Ajouter un pilote</legend>
         <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
@@ -53,7 +53,7 @@
         <td>
           <details>
             <summary>Éditer</summary>
-              <form method="post" enctype="multipart/form-data" action="/pilotes/update">
+              <form method="post" enctype="multipart/form-data" action="<?= htmlspecialchars(route_path('pilotes/update')) ?>">
                 <input type="hidden" name="id" value="<?= $pilote['id'] ?>">
                 <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
                 <label>Nom <input name="nom" value="<?= htmlspecialchars($pilote['nom']) ?>" required></label>
@@ -70,7 +70,7 @@
                 <label>Nouveau portrait <input type="file" name="photo" accept="image/*"></label>
                 <button>Mettre à jour</button>
               </form>
-              <form method="post" action="/pilotes/delete" onsubmit="return confirm('Supprimer ce pilote&nbsp;?')">
+              <form method="post" action="<?= htmlspecialchars(route_path('pilotes/delete')) ?>" onsubmit="return confirm('Supprimer ce pilote&nbsp;?')">
                 <input type="hidden" name="id" value="<?= $pilote['id'] ?>">
                 <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
                 <button class="danger">Supprimer</button>

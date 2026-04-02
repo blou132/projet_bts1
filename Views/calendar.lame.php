@@ -20,7 +20,7 @@
         $location = $event['ville'] . ' · ' . $event['pays'];
         $title = $event['nom'] . ' - ' . $location . ' - ' . $date->format('d/m/Y');
       ?>
-      <a class="calendar-card" href="/calendrier/course/<?= (int)$event['id'] ?>"
+      <a class="calendar-card" href="<?= htmlspecialchars(route_path('calendrier/course/' . (int)$event['id'])) ?>"
          data-date="<?= htmlspecialchars($event['date_course']) ?>"
          data-name="<?= htmlspecialchars($event['nom']) ?>"
          data-location="<?= htmlspecialchars($location) ?>"

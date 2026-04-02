@@ -214,8 +214,10 @@
     const redirectInput = $('.js-modal-redirect', modal);
     const registerLink = $('.js-modal-register', modal);
     const emailInput = $('input[name="email"]', modal);
+    const registerBase = modal.dataset.registerBase || '/auth/register';
+    const defaultRedirect = modal.dataset.defaultRedirect || '/accueil';
 
-    const fallback = () => `${window.location.pathname || ''}${window.location.search || ''}${window.location.hash || ''}` || '/accueil';
+    const fallback = () => `${window.location.pathname || ''}${window.location.search || ''}${window.location.hash || ''}` || defaultRedirect;
     const safe = (v) => {
       const value = (v || '').trim();
       const isLocal = value.startsWith('?') || value.startsWith('/');
@@ -234,7 +236,7 @@
         e.preventDefault();
         const redirect = safe(opener.dataset.redirect || fallback());
         if (redirectInput) redirectInput.value = redirect;
-        if (registerLink) registerLink.href = `/auth/register?redirect=${encodeURIComponent(redirect)}`;
+        if (registerLink) registerLink.href = `${registerBase}?redirect=${encodeURIComponent(redirect)}`;
         modal.classList.add('is-open');
         modal.setAttribute('aria-hidden', 'false');
         document.body.classList.add('modal-open');

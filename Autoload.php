@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require_once __DIR__ . '/helpers.php';
+
 // PSR-4 minimal pour l'espace de noms App\*
 spl_autoload_register(function (string $class) {
     $prefix = 'App\\';

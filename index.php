@@ -115,12 +115,12 @@ if (!$isAuthenticated) {
 
     if (!$routeAllowed || $isPost) {
         if (!$isAuthRoute) {
-            header('Location: /auth/login');
+            header('Location: ' . route_path('auth/login'));
             exit;
         }
     }
 } elseif ($route === 'auth' && in_array($action, $authRoutes, true)) {
-    header('Location: /accueil');
+    header('Location: ' . route_path('accueil'));
     exit;
 }
 
@@ -149,7 +149,7 @@ switch ($route) {
         exit;
 
     case 'docs':
-        header('Location: /docs/doxygen/html/index.html');
+        header('Location: ' . route_path('docs/doxygen/html/index.html'));
         exit;
 
     case 'documentation':

@@ -93,7 +93,11 @@ class AuthController extends BaseController
             $redirect = trim($redirect);
             $isLocal = str_starts_with($redirect, '?') || str_starts_with($redirect, '/');
             if ($redirect !== '' && $isLocal && !str_contains($redirect, "\n") && !str_contains($redirect, "\r")) {
-                header('Location: ' . $redirect);
+                $target = $redirect;
+                if (str_starts_with($redirect, '/') && function_exists('route_path')) {
+                    $target = \route_path($redirect);
+                }
+                header('Location: ' . $target);
                 exit;
             }
         }
@@ -163,7 +167,11 @@ class AuthController extends BaseController
             $redirect = trim($redirect);
             $isLocal = str_starts_with($redirect, '?') || str_starts_with($redirect, '/');
             if ($redirect !== '' && $isLocal && !str_contains($redirect, "\n") && !str_contains($redirect, "\r")) {
-                header('Location: ' . $redirect);
+                $target = $redirect;
+                if (str_starts_with($redirect, '/') && function_exists('route_path')) {
+                    $target = \route_path($redirect);
+                }
+                header('Location: ' . $target);
                 exit;
             }
         }

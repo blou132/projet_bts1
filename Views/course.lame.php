@@ -1,8 +1,8 @@
 <section class="season-view">
   <header class="season-head">
     <h2><?= htmlspecialchars($course['nom']) ?></h2>
-    <p><?= htmlspecialchars($course['ville']) ?> · <?= htmlspecialchars((new DateTime($course['date_course']))->format('d F Y')) ?></p>
-    <p><a href="/calendrier">← Retour au calendrier</a></p>
+    <p><?= htmlspecialchars($course['ville']) ?> - <?= htmlspecialchars((new DateTime($course['date_course']))->format('d F Y')) ?></p>
+    <p><a href="<?= htmlspecialchars(route_path('calendrier')) ?>">&larr; Retour au calendrier</a></p>
   </header>
 
   <?php require __DIR__ . '/partials/course_results.lame.php'; ?>

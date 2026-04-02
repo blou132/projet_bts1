@@ -17,7 +17,7 @@
       </div>
     <?php endif; ?>
 
-    <form method="post" action="/auth/store">
+    <form method="post" action="<?= htmlspecialchars(route_path('auth/store')) ?>">
       <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
       <?php if (!empty($_GET['redirect'])): ?>
         <input type="hidden" name="redirect" value="<?= htmlspecialchars((string)$_GET['redirect']) ?>">
@@ -41,6 +41,6 @@
       <button type="submit" class="btn">Creer mon compte</button>
     </form>
 
-    <p class="auth-subtitle">Deja inscrit ? <a href="/auth/login">Se connecter</a></p>
+    <p class="auth-subtitle">Deja inscrit ? <a href="<?= htmlspecialchars(route_path('auth/login')) ?>">Se connecter</a></p>
   </div>
 </section>

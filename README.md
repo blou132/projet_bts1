@@ -45,6 +45,22 @@ Puis ouvrir : `http://localhost:8000/accueil`
 Astuce "1 clic" :
 - dans l'explorateur de fichiers Linux, double-cliquer `lancer.sh` et choisir "Executer dans un terminal".
 
+### Option B (Windows + XAMPP) - script PowerShell
+
+Depuis PowerShell, dans le dossier du projet :
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\lancer.ps1
+```
+
+Si MySQL root a un mot de passe :
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\lancer.ps1 -MysqlRootPassword "VOTRE_MDP"
+```
+
+Le script detecte automatiquement `php.exe` et `mysql.exe` (PATH ou chemins XAMPP par defaut).
+
 ## Ce qu'il faut verifier
 
 - CRUD ecuries/pilotes via `/ecuries` (admin).
@@ -86,5 +102,5 @@ Historique de dev :
 
 ## Depannage rapide
 
-- `Access denied for user ...` : verifier `.env` (DB_USER / DB_PASS), puis relancer `./lancer.sh`.
-- Si la base est invalide : relancer `./lancer.sh` (le script recree base/utilisateur + donnees).
+- `Access denied for user ...` : verifier `.env` (DB_USER / DB_PASS), puis relancer `./lancer.sh` (Linux/macOS) ou `.\lancer.ps1` (Windows).
+- Si la base est invalide : relancer le script de lancement (il recree base/utilisateur + donnees).

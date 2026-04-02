@@ -54,7 +54,7 @@
               <td class="table-actions">
                 <details>
                   <summary>Modifier</summary>
-                  <form method="post" action="/calendrier/updateResult" data-ajax="results">
+                  <form method="post" action="<?= htmlspecialchars(route_path('calendrier/updateResult')) ?>" data-ajax="results">
                     <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
                     <input type="hidden" name="result_id" value="<?= (int)$row['result_id'] ?>">
                     <input type="hidden" name="course_id" value="<?= (int)$course['id'] ?>">
@@ -70,7 +70,7 @@
                     <label>Position <input type="number" min="1" max="<?= (int)$maxResultPosition ?>" name="position" value="<?= (int)$row['position'] ?>" required></label>
                     <button>Mettre a jour</button>
                   </form>
-                  <form method="post" action="/calendrier/deleteResult" data-ajax="results" onsubmit="return confirm('Supprimer ce resultat ?');">
+                  <form method="post" action="<?= htmlspecialchars(route_path('calendrier/deleteResult')) ?>" data-ajax="results" onsubmit="return confirm('Supprimer ce resultat ?');">
                     <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">
                     <input type="hidden" name="result_id" value="<?= (int)$row['result_id'] ?>">
                     <button class="danger">Supprimer</button>
@@ -87,7 +87,7 @@
   <?php endif; ?>
 
   <?php if (!empty($isAdmin)): ?>
-    <form class="result-form" method="post" action="/calendrier/addResult" data-ajax="results">
+    <form class="result-form" method="post" action="<?= htmlspecialchars(route_path('calendrier/addResult')) ?>" data-ajax="results">
       <fieldset>
         <legend>Ajouter un resultat</legend>
         <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">

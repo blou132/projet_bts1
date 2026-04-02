@@ -8,18 +8,6 @@ $isAdmin = $isAdmin ?? (!empty($currentUser['role']) && $currentUser['role'] ===
 if (!isset($csrfToken)) {
   $csrfToken = Csrf::getToken();
 }
-if (!function_exists('asset_path')) {
-  function asset_path(string $path): string
-  {
-    if ($path === '') {
-      return '/';
-    }
-    if (preg_match('#^(https?:)?//#i', $path) === 1) {
-      return $path;
-    }
-    return '/' . ltrim($path, '/');
-  }
-}
 ?><!doctype html>
 <html lang="fr">
 <head>
@@ -34,7 +22,7 @@ if (!function_exists('asset_path')) {
     <span class="brand-accent"><img src="<?= htmlspecialchars(asset_path('Public/assets/pm-emblem.svg')) ?>" alt="Logo Paddock Manager"></span>
     <div class="brand-copy">
       <span class="brand-title">Paddock Manager</span>
-      <small class="brand-tagline">Administration des Grands Prix, écuries et pilotes</small>
+      <small class="brand-tagline">Administration des Grands Prix, ecuries et pilotes</small>
     </div>
   </div>
   <div class="header-right">
@@ -44,10 +32,10 @@ if (!function_exists('asset_path')) {
       <?php if (!empty($currentUser)): ?>
       <div class="user-chip">
         <span class="user-name">Connecte</span>
-        <a class="user-logout" href="/auth/logout">Déconnexion</a>
+        <a class="user-logout" href="<?= htmlspecialchars(route_path('auth/logout')) ?>">Deconnexion</a>
       </div>
       <?php else: ?>
-      <a class="btn login-link" href="/auth/login" data-open-modal="login">Se connecter</a>
+      <a class="btn login-link" href="<?= htmlspecialchars(route_path('auth/login')) ?>" data-open-modal="login">Se connecter</a>
       <?php endif; ?>
     </div>
   </div>

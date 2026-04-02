@@ -5,11 +5,11 @@
   </header>
 
   <?php if (empty($currentUser)): ?>
-    <?php $betRedirect = '/calendrier/course/' . (int)$course['id'] . '#bet'; ?>
+    <?php $betRedirect = route_path('calendrier/course/' . (int)$course['id']) . '#bet'; ?>
     <div class="bet-login" id="bet">
       <p class="auth-subtitle">Connectez-vous pour parier.</p>
-      <a class="btn login-link" href="/auth/login?redirect=<?= htmlspecialchars(rawurlencode($betRedirect)) ?>" data-open-modal="login" data-redirect="<?= htmlspecialchars($betRedirect) ?>">Se connecter</a>
-      <p class="auth-subtitle">Pas encore de compte ? <a href="/auth/register?redirect=<?= htmlspecialchars(rawurlencode($betRedirect)) ?>">Creer un compte</a></p>
+      <a class="btn login-link" href="<?= htmlspecialchars(route_path('auth/login')) ?>?redirect=<?= htmlspecialchars(rawurlencode($betRedirect)) ?>" data-open-modal="login" data-redirect="<?= htmlspecialchars($betRedirect) ?>">Se connecter</a>
+      <p class="auth-subtitle">Pas encore de compte ? <a href="<?= htmlspecialchars(route_path('auth/register')) ?>?redirect=<?= htmlspecialchars(rawurlencode($betRedirect)) ?>">Creer un compte</a></p>
     </div>
   <?php else: ?>
     <?php if (!empty($betErrors)): ?>
@@ -73,7 +73,7 @@
     <?php endif; ?>
 
     <?php if ($betWindow['isOpen']): ?>
-      <form class="result-form bet-form" method="post" action="/calendrier/placeBet">
+      <form class="result-form bet-form" method="post" action="<?= htmlspecialchars(route_path('calendrier/placeBet')) ?>">
         <fieldset>
           <legend>Composer votre podium</legend>
           <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken) ?>">

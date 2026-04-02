@@ -9,8 +9,8 @@ $headlinePilot = $pilotesSpotlight[0] ?? null;
       <h1>Paddock Manager</h1>
       <p>Suivez les Grands Prix, pilotez les ecuries et comparez vos paris en un coup d'oeil.</p>
       <div class="home-cta">
-        <a class="home-btn home-btn-primary" href="/calendrier">Voir le calendrier</a>
-        <a class="home-btn home-btn-ghost" href="/paris">Classement des paris</a>
+        <a class="home-btn home-btn-primary" href="<?= htmlspecialchars(route_path('calendrier')) ?>">Voir le calendrier</a>
+        <a class="home-btn home-btn-ghost" href="<?= htmlspecialchars(route_path('paris')) ?>">Classement des paris</a>
       </div>
     </div>
     <div class="home-top-side">

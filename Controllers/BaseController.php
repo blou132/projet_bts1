@@ -111,7 +111,8 @@ class BaseController
         }
 
         $query = $params ? ('?' . http_build_query($params)) : '';
-        header('Location: ' . $path . $query);
+        $target = function_exists('route_path') ? \route_path($path) : $path;
+        header('Location: ' . $target . $query);
         exit;
     }
 
