@@ -6,6 +6,7 @@ namespace App\Controllers;
 use App\Database\Database;
 use App\Controllers\ValidationController;
 use App\Security\Csrf;
+use App\Security\LoginThrottle;
 use App\Security\SecurityLogger;
 
 /**
@@ -16,13 +17,19 @@ class AuthController extends BaseController
     /** Affiche le formulaire de connexion. */
     public function login(): void
     {
+        $clientIp = LoginThrottle::clientIp();
+        $status = LoginThrottle::status($clientIp);
+        $throttleRemaining = !empty($status['blocked']) ? (int)($status['remaining'] ?? 0) : 0;
+
         $flash = $_SESSION['flash_error'] ?? null;
         unset($_SESSION['flash_error']);
 
         $this->render('auth/login.lame.php', [
+            'errors' => [],
             'csrfToken' => Csrf::getToken(),
             'flashError' => $flash,
             'old' => [],
+            'throttleRemaining' => $throttleRemaining,
         ]);
     }
 
@@ -46,6 +53,13 @@ class AuthController extends BaseController
 
         $email = trim((string)($_POST['email'] ?? ''));
         $password = (string)($_POST['password'] ?? '');
+        $clientIp = LoginThrottle::clientIp();
+
+        $status = LoginThrottle::status($clientIp);
+        if (!empty($status['blocked'])) {
+            $this->renderBlockedLogin($email, (int)($status['remaining'] ?? 0));
+            return;
+        }
 
         $errors = [];
         if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -57,6 +71,12 @@ class AuthController extends BaseController
 
         if ($errors) {
             SecurityLogger::authFail($email, 'invalid_payload');
+            LoginThrottle::recordFailure($clientIp);
+            $status = LoginThrottle::status($clientIp);
+            if (!empty($status['blocked'])) {
+                $this->renderBlockedLogin($email, (int)($status['remaining'] ?? 0));
+                return;
+            }
             $flash = $_SESSION['flash_error'] ?? null;
             unset($_SESSION['flash_error']);
             $this->render('auth/login.lame.php', [
@@ -64,6 +84,7 @@ class AuthController extends BaseController
                 'old' => ['email' => $email],
                 'csrfToken' => Csrf::getToken(),
                 'flashError' => $flash,
+                'throttleRemaining' => 0,
             ]);
             return;
         }
@@ -74,6 +95,12 @@ class AuthController extends BaseController
 
         if (!$user || !password_verify($password, $user['password'])) {
             SecurityLogger::authFail($email, 'invalid_credentials');
+            LoginThrottle::recordFailure($clientIp);
+            $status = LoginThrottle::status($clientIp);
+            if (!empty($status['blocked'])) {
+                $this->renderBlockedLogin($email, (int)($status['remaining'] ?? 0));
+                return;
+            }
             $flash = $_SESSION['flash_error'] ?? null;
             unset($_SESSION['flash_error']);
             $this->render('auth/login.lame.php', [
@@ -81,12 +108,14 @@ class AuthController extends BaseController
                 'old' => ['email' => $email],
                 'csrfToken' => Csrf::getToken(),
                 'flashError' => $flash,
+                'throttleRemaining' => 0,
             ]);
             return;
         }
 
         unset($user['password']);
         $_SESSION['user'] = $user;
+        LoginThrottle::clear($clientIp);
 
         $redirect = $_POST['redirect'] ?? '';
         if (is_string($redirect)) {
@@ -103,6 +132,18 @@ class AuthController extends BaseController
         }
 
         $this->redirectTo('accueil');
+    }
+
+    private function renderBlockedLogin(string $email, int $remainingSeconds): void
+    {
+        $remaining = max(1, $remainingSeconds);
+        $this->render('auth/login.lame.php', [
+            'errors' => [],
+            'old' => ['email' => $email],
+            'csrfToken' => Csrf::getToken(),
+            'flashError' => null,
+            'throttleRemaining' => $remaining,
+        ]);
     }
 
     /** Crée un compte utilisateur. */

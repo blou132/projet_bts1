@@ -130,6 +130,48 @@
     setInterval(tick, 1000);
   };
 
+  const initLockoutCountdown = () => {
+    const notice = $('.js-lockout');
+    if (!notice) return;
+
+    const counter = $('.js-lockout-counter', notice);
+    const form = notice.parentElement ? $('form', notice.parentElement) : null;
+    let seconds = Number.parseInt(notice.dataset.seconds || '0', 10);
+    if (!Number.isFinite(seconds) || seconds <= 0) return;
+
+    const updateFormState = (blocked) => {
+      if (!form) return;
+      $$('input:not([type="hidden"]), select, textarea, button[type="submit"]', form).forEach((el) => {
+        el.disabled = blocked;
+      });
+    };
+
+    const format = (value) => {
+      const total = Math.max(0, value);
+      const h = Math.floor(total / 3600);
+      const m = Math.floor((total % 3600) / 60);
+      const s = total % 60;
+      if (h > 0) return `${h}h ${String(m).padStart(2, '0')}m ${String(s).padStart(2, '0')}s`;
+      return `${m}m ${String(s).padStart(2, '0')}s`;
+    };
+
+    const tick = () => {
+      if (counter) counter.textContent = format(seconds);
+      if (seconds <= 0) {
+        updateFormState(false);
+        notice.innerHTML = '<p>Blocage termine. Vous pouvez vous reconnecter.</p>';
+        notice.classList.add('success');
+        return;
+      }
+
+      updateFormState(true);
+      seconds -= 1;
+      setTimeout(tick, 1000);
+    };
+
+    tick();
+  };
+
   const initAjaxResults = () => {
     document.addEventListener('submit', async (e) => {
       const form = e.target.closest('form[data-ajax="results"]');
@@ -289,6 +331,7 @@
     safeRun(initFilters);
     safeRun(initSort);
     safeRun(initCountdown);
+    safeRun(initLockoutCountdown);
     safeRun(initAjaxResults);
     safeRun(initModal);
     safeRun(initMobileMenu);
