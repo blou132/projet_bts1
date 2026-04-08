@@ -2,7 +2,7 @@
 
 Application PHP (MVC leger) : ecuries, pilotes, calendrier, resultats et paris podium.
 
-## Guide examinateur (simple)
+## Guide examinateur
 
 Base locale : `http://localhost:8000`
 
@@ -28,7 +28,7 @@ Prerequis :
 - PHP 8.1+
 - MySQL 5.7+ / 8+
 
-### Option A (recommandee) - script automatique
+### Option A - script automatique
 
 Un seul script fait tout :
 - creation base MySQL + utilisateur depuis `.env`
